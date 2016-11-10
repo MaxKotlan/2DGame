@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class blockSpawn : MonoBehaviour
+public class oldBlockSpawn : MonoBehaviour
 {
 	public GameObject Dirt;
 	public GameObject Grass;
@@ -9,8 +9,9 @@ public class blockSpawn : MonoBehaviour
 	public GameObject Emerald;
 	public GameObject Player;
 	public GameObject Bedrock;
-	float blockX = 50;
-	float blockY = 1000;
+	float distanceMultiply = 1;
+	float blocksGened = 10000;
+	float blocksGenedSqrt;
 	int blocks = 0;
 	double x = 0;
 	double y = 0;
@@ -21,7 +22,7 @@ public class blockSpawn : MonoBehaviour
 	{
 
 		// creates horozontal cubes
-		while (blocks != (blockY * blockX))
+		while (blocks != blocksGened)
 		{
 			blocks++;
 			x+=2.6;
@@ -30,14 +31,16 @@ public class blockSpawn : MonoBehaviour
 			int rndOreNum = Random.Range(0,51);
 
 
-			//Determine Grass Layer
-			if (blocks <= blockX) {
-				Instantiate (Grass, new Vector3 ((float)x, (float)y, (float)z), Quaternion.Euler (0, 180, 0));
+			blocksGenedSqrt = Mathf.Sqrt (blocksGened);
+
+			//Determine Bedrock Layer
+			if (blocks >= blocksGened - ((blocksGenedSqrt * distanceMultiply) + 1)) {
+				Instantiate (Bedrock, new Vector3 ((float)x, (float)y, (float)z), Quaternion.Euler (0, 180, 0));
 			} else {
 
-				//Bedrock Layer & randomizer
-				if (blocks >= (blockX * blockY) - blockX) {
-					Instantiate (Bedrock, new Vector3 ((float)x, (float)y, (float)z), Quaternion.Euler (0, 180, 0));
+				//Grass Layer & randomizer
+				if (blocks <= blocksGenedSqrt * distanceMultiply) {
+					Instantiate (Grass, new Vector3 ((float)x, (float)y, (float)z), Quaternion.Euler (0, 180, 0));
 				} else {
 
 					//Emerald Spawner
@@ -57,7 +60,7 @@ public class blockSpawn : MonoBehaviour
 				//End of Bedrock
 			}
 
-			if (x >= 2.6 * blockX)
+			if (x >= 2.6 * (blocksGenedSqrt * distanceMultiply))
 			{
 				x = 0;
 				y -= 2.6;

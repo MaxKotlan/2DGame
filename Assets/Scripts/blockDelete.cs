@@ -5,7 +5,7 @@ public class blockDelete : MonoBehaviour {
 	public GameObject Block;
 	public GameObject Player;
 	float distance;
-
+	public float blockDurability = 2;
 	// Use this for initialization 
 	void Start () {
 	
@@ -27,13 +27,11 @@ public class blockDelete : MonoBehaviour {
 
 			distance = Vector3.Distance (gameObject.transform.position, Player.transform.position);
 
-			if( distance < 4.5 && Block.tag != "Bedrock"){
-			//print (Input.mousePosition);
-			Vector3 p = Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 10.0f));
-			//print (p);
-			//print (p.x);
-			//print (p.y);
-			Destroy (this.gameObject);
+			if (distance < 4.5 && blockDurability == 1 && Block.tag != "Bedrock") {
+				Destroy (this.gameObject);
+			} else {
+				GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, .75f);
+				blockDurability -= 1;
 			}
 		}
 

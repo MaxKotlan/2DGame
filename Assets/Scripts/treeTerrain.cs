@@ -12,9 +12,9 @@ public class treeTerrain : MonoBehaviour
 	public GameObject Stone;
 	public GameObject Air;
 
-	float distanceMultiply = 5;
+	float distanceMultiply = 1;
 	//sqrt of blockSpawn blocksGened
-	int totalBlocks = 300;
+	int totalBlocks = 25;
 	int blocks = 0;
 	double x = 0;
     double y = 0;
