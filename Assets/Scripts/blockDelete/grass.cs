@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class blockDelete : MonoBehaviour {
+public class grass : MonoBehaviour {
 	public GameObject Block;
 	public GameObject Player;
 	float distance;
