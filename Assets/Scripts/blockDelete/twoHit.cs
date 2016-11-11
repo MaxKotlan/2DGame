@@ -30,8 +30,10 @@ public class twoHit: MonoBehaviour {
 			if (distance < 4.5 && blockDurability == 1 && Block.tag != "Bedrock") {
 				Destroy (this.gameObject);
 			} else {
-				GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, .75f);
-				blockDurability -= 1;
+				if (distance < 4.5 && Block.tag != "Bedrock") {
+					GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, .75f);
+					blockDurability -= 1;
+				}
 			}
 		}
 
