@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class grass : MonoBehaviour {
+public class twoHit: MonoBehaviour {
 	public GameObject Block;
 	public GameObject Player;
 	float distance;

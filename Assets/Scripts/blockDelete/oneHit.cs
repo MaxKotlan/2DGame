@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class emerald : MonoBehaviour {
+public class oneHit : MonoBehaviour {
 	public GameObject Block;
 	public GameObject Player;
 	float distance;
-	public float blockDurability = 2;
 	// Use this for initialization 
 	void Start () {
 	
@@ -27,12 +26,9 @@ public class emerald : MonoBehaviour {
 
 			distance = Vector3.Distance (gameObject.transform.position, Player.transform.position);
 
-			if (distance < 4.5 && blockDurability == 1 && Block.tag != "Bedrock") {
+			if (distance < 4.5 && Block.tag != "Bedrock") {
 				Destroy (this.gameObject);
-			} else {
-				GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, .5f);
-				blockDurability -= 1;
-			}
+			} 
 		}
 
 	}
