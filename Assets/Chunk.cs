@@ -41,7 +41,7 @@ public class Chunk : MonoBehaviour {
             {
                 for (int z = 0; z < width; z++)
                 {
-                    if (y < (height - 1))
+                    if (y < (groundheight - 1))
                     {
                         if (Mathf.RoundToInt(Random.Range(0,51)) == 25)
                         {
