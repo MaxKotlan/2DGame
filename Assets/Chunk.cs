@@ -5,9 +5,21 @@ using System.Collections.Generic;
 [RequireComponent (typeof(MeshFilter))]
 [RequireComponent(typeof(MeshCollider))]
 
+public class block
+{
+    public Vector3 cords;
+    public int materialID;
+
+    public block(Vector3 cord, int matID)
+    {
+        materialID = matID;
+    }
+}
+
 public class Chunk : MonoBehaviour {
     public int width = 20;
-    public byte[,,] map;
+    public int height = 20;
+    public block[,,] map;
     // Use this for initialization
     protected Mesh mesh;
 
@@ -17,15 +29,38 @@ public class Chunk : MonoBehaviour {
 
     protected MeshCollider meshCollider;
 
-	void Start () {
+    void Start() {
         meshCollider = GetComponent<MeshCollider>();
-        map = new byte[width, width, width];
-        for (int x = 0; x < width; x++)
+        map = new block[width, height, width];
+        for (int y = 0; y < height; y++)
         {
-            for (int z = 0; z < width; z++)
+
+            for (int x = 0; x < width; x++)
             {
-                map[x, 0, z] = 1;
-                map[x, 1, z] = (byte)Mathf.RoundToInt(Random.value);
+                for (int z = 0; z < width; z++)
+                {
+                    if (y < (height - 3))
+                    {
+                        if (Mathf.RoundToInt(Random.value) == 1)
+                        {
+                            map[x, y, z] = new block(new Vector3(x, y, z), 3);
+                        }
+                        else
+                        {
+                            map[x, y, z] = null;
+                        }
+                    } else
+                    {
+                        if (Mathf.RoundToInt(Random.value) == 1)
+                        {
+                            map[x, y, z] = new block(new Vector3(x, y, z), 2);
+                        }
+                        else
+                        {
+                            map[x, y, z] = null;
+                        }
+                    }
+                }
             }
         }
 
@@ -33,19 +68,19 @@ public class Chunk : MonoBehaviour {
         GetComponent<MeshFilter>().mesh = mesh;
 
         Regenerate();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
 
-    public void DrawBrick(int x, int y, int z, byte block)
+    // Update is called once per frame
+    void Update() {
+
+    }
+
+    public void DrawBrick(int x, int y, int z, block block)
     {
         Vector3 start = new Vector3(x, y, z);
         Vector3 offset1, offset2;
 
-        if (isTransparent(x, y-1, z))
+        if (isTransparent(x, y - 1, z))
         {
             offset1 = Vector3.left;
             offset2 = Vector3.back;
@@ -58,7 +93,7 @@ public class Chunk : MonoBehaviour {
             DrawFace(start + Vector3.up, offset1, offset2, block);
         }
 
-        if (isTransparent(x -1, y, z))
+        if (isTransparent(x - 1, y, z))
         {
             offset1 = Vector3.up;
             offset2 = Vector3.back;
@@ -70,7 +105,7 @@ public class Chunk : MonoBehaviour {
             offset2 = Vector3.back;
             DrawFace(start + Vector3.right + Vector3.up, offset1, offset2, block);
         }
-   
+
         if (isTransparent(x, y, z - 1))
         {
             offset1 = Vector3.left;
@@ -85,7 +120,7 @@ public class Chunk : MonoBehaviour {
         }
     }
 
-    public void DrawFace(Vector3 start, Vector3 offset1, Vector3 offset2, byte block)
+    public void DrawFace(Vector3 start, Vector3 offset1, Vector3 offset2, block block)
     {
         int index = verts.Count;
 
@@ -96,8 +131,8 @@ public class Chunk : MonoBehaviour {
 
         int textureid = Mathf.RoundToInt(Random.Range(1, 7));
         Vector2 uvBase = new Vector2(0.0f, .75f);
-        
-        switch(textureid)
+
+        switch (block.materialID)
         {
             case 1:
                 uvBase = new Vector2(0.0f, .75f);
@@ -139,11 +174,16 @@ public class Chunk : MonoBehaviour {
 
     public bool isTransparent(int x, int y, int z)
     {
-        if ((x < 0) || (y < 0) || (z < 0) || (x >= width) || (y >= width) || (z >= width))
+
+        if ((x < 0) || (y < 0) || (z < 0) || (x >= width) || (y >= width) || (z >= width) || (map[x, y, z] == null))
         {
             return true;
         }
-        return map[x, y, z] == 0;
+        //if (map[x, y, z] == null)
+        //{
+        //    return true;
+        //}
+        return false;
     }
 
     public void Regenerate()
@@ -159,8 +199,8 @@ public class Chunk : MonoBehaviour {
             {
                 for (int z = 0; z < width; z++)
                 {
-                    byte block = map[x, y, z];
-                    if (block == 0)
+                    block block = map[x, y, z];
+                    if (block == null)
                     {
                         continue;
                     }
