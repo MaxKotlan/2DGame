@@ -18,7 +18,9 @@ public class block
 
 public class Chunk : MonoBehaviour {
     public int width = 20;
-    public int height = 20;
+    public int height = 100;
+    public int groundheight = 60;
+
     public block[,,] map;
     // Use this for initialization
     protected Mesh mesh;
@@ -32,7 +34,7 @@ public class Chunk : MonoBehaviour {
     void Start() {
         meshCollider = GetComponent<MeshCollider>();
         map = new block[width, height, width];
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < groundheight; y++)
         {
 
             for (int x = 0; x < width; x++)
@@ -41,23 +43,22 @@ public class Chunk : MonoBehaviour {
                 {
                     if (y < (height - 3))
                     {
-                        if (Mathf.RoundToInt(Random.value) == 1)
+                        if (Mathf.RoundToInt(Random.Range(0,51)) != 25)
                         {
                             map[x, y, z] = new block(new Vector3(x, y, z), 3);
                         }
                         else
                         {
-                            map[x, y, z] = null;
+                            map[x, y, z] = new block(new Vector3(x, y, z), 5);
                         }
                     } else
                     {
-                        if (Mathf.RoundToInt(Random.value) == 1)
+                        if (y < (height - 1))
                         {
                             map[x, y, z] = new block(new Vector3(x, y, z), 2);
-                        }
-                        else
+                        } else
                         {
-                            map[x, y, z] = null;
+                            map[x, y, z] = new block(new Vector3(x, y, z), 1);
                         }
                     }
                 }
@@ -175,7 +176,7 @@ public class Chunk : MonoBehaviour {
     public bool isTransparent(int x, int y, int z)
     {
 
-        if ((x < 0) || (y < 0) || (z < 0) || (x >= width) || (y >= width) || (z >= width) || (map[x, y, z] == null))
+        if ((x < 0) || (y < 0) || (z < 0) || (x >= width) || (y >= height) || (z >= width) || (map[x, y, z] == null))
         {
             return true;
         }
@@ -195,7 +196,7 @@ public class Chunk : MonoBehaviour {
 
         for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < width; y++)
+            for (int y = 0; y < height; y++)
             {
                 for (int z = 0; z < width; z++)
                 {
