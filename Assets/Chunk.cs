@@ -41,7 +41,7 @@ public class Chunk : MonoBehaviour {
             {
                 for (int z = 0; z < width; z++)
                 {
-                    if (y < (groundheight - 1))
+                    if (y < (groundheight - 2))
                     {
                         if (Mathf.RoundToInt(Random.Range(0,51)) == 25)
                         {
@@ -56,9 +56,19 @@ public class Chunk : MonoBehaviour {
                         }
                     } else
                     {
-          
-                      map[x, y, z] = new block(new Vector3(x, y, z), 1);
-                 
+                        if (y < (groundheight - 1))
+                        {
+                            map[x, y, z] = new block(new Vector3(x, y, z), 1);
+                        } else
+                        {
+                            if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
+                            {
+                                map[x, y, z] = new block(new Vector3(x, y, z), 1);
+                            } else
+                            {
+                                map[x, y, z] = null;
+                            }
+                        }
                     }
                 }
             }
@@ -91,6 +101,9 @@ public class Chunk : MonoBehaviour {
             offset1 = Vector3.right;
             offset2 = Vector3.back;
             DrawFace(start + Vector3.up, offset1, offset2, block, Vector3.up);
+        } else if (block.materialID == 1)
+        {
+            block.materialID = 2;
         }
 
         if (isTransparent(x - 1, y, z))
