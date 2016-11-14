@@ -19,6 +19,9 @@ public class block
 public class Chunk : MonoBehaviour {
     public int width = 20;
     public int height = 100;
+    public int scrolly = 60;
+    public int scrollx = 20;
+    public int scrollz = 20;
     public int groundheight = 60;
 
     public block[,,] map;
@@ -212,7 +215,7 @@ public class Chunk : MonoBehaviour {
     public bool isTransparent(int x, int y, int z)
     {
 
-        if ((x < 0) || (y < 0) || (z < 0) || (x >= width) || (y >= height) || (z >= width) || (map[x, y, z] == null))
+        if ((x < 0) || (y < 0) || (z < 0) || (x >= scrollx) || (y >= scrolly) || (z >= scrollz) || (map[x, y, z] == null))
         {
             return true;
         }
@@ -230,11 +233,11 @@ public class Chunk : MonoBehaviour {
         uv.Clear();
         mesh.triangles = tris.ToArray();
 
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < scrollx; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < scrolly; y++)
             {
-                for (int z = 0; z < width; z++)
+                for (int z = 0; z < scrollz; z++)
                 {
                     block block = map[x, y, z];
                     if (block == null)
