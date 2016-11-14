@@ -88,7 +88,7 @@ public class Chunk : MonoBehaviour {
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
 		int treeLoop = 0;
-		while(treeLoop != 4){
+		while(treeLoop != 6){
 			Tree();
 			treeLoop++;
 		}
@@ -97,7 +97,6 @@ public class Chunk : MonoBehaviour {
 
 	// Generate random trees
 	public void Tree(){
-		print ("You tried");
 		int makeTree = Mathf.RoundToInt (Random.Range (0, 2));
 		print (makeTree);
 		if (makeTree == 1)
