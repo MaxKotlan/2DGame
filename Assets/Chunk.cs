@@ -19,7 +19,7 @@ public class block
 public class Chunk : MonoBehaviour {
     public int width = 20;
     public int height = 100;
-    public int scrolly = 60;
+    public int scrolly = 100;
     public int scrollx = 20;
     public int scrollz = 20;
     public int groundheight = 60;
@@ -84,6 +84,19 @@ public class Chunk : MonoBehaviour {
                 }
             }
         }
+		map [5, 59, 5] = new block (new Vector3 (0, 0, 0), 6);
+		map [5, 60, 5] = new block (new Vector3 (0, 0, 0), 6);
+		map [5, 61, 5] = new block (new Vector3 (0, 0, 0), 6);
+		map [5, 62, 5] = new block (new Vector3 (0, 0, 0), 7);
+		map [4, 62, 5] = new block (new Vector3 (0, 0, 0), 7);
+		map [4, 62, 4] = new block (new Vector3 (0, 0, 0), 7);
+		map [6, 62, 5] = new block (new Vector3 (0, 0, 0), 7);
+		map [6, 62, 4] = new block (new Vector3 (0, 0, 0), 7);
+		map [5, 62, 4] = new block (new Vector3 (0, 0, 0), 7);
+		map [4, 62, 6] = new block (new Vector3 (0, 0, 0), 7);
+		map [5, 62, 6] = new block (new Vector3 (0, 0, 0), 7);
+		map [6, 62, 6] = new block (new Vector3 (0, 0, 0), 7);
+		map [5, 63, 5] = new block (new Vector3 (0, 0, 0), 7);
 
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
