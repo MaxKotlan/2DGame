@@ -16,6 +16,7 @@ public class block
     }
 }
 
+
 public class Chunk : MonoBehaviour {
     public int width = 20;
     public int height = 100;
@@ -84,25 +85,45 @@ public class Chunk : MonoBehaviour {
                 }
             }
         }
-		map [5, 59, 5] = new block (new Vector3 (0, 0, 0), 6);
-		map [5, 60, 5] = new block (new Vector3 (0, 0, 0), 6);
-		map [5, 61, 5] = new block (new Vector3 (0, 0, 0), 6);
-		map [5, 62, 5] = new block (new Vector3 (0, 0, 0), 7);
-		map [4, 62, 5] = new block (new Vector3 (0, 0, 0), 7);
-		map [4, 62, 4] = new block (new Vector3 (0, 0, 0), 7);
-		map [6, 62, 5] = new block (new Vector3 (0, 0, 0), 7);
-		map [6, 62, 4] = new block (new Vector3 (0, 0, 0), 7);
-		map [5, 62, 4] = new block (new Vector3 (0, 0, 0), 7);
-		map [4, 62, 6] = new block (new Vector3 (0, 0, 0), 7);
-		map [5, 62, 6] = new block (new Vector3 (0, 0, 0), 7);
-		map [6, 62, 6] = new block (new Vector3 (0, 0, 0), 7);
-		map [5, 63, 5] = new block (new Vector3 (0, 0, 0), 7);
-
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
-
+		int treeLoop = 0;
+		while(treeLoop != 4){
+			Tree();
+			treeLoop++;
+		}
         Regenerate();
     }
+
+	// Generate random trees
+	public void Tree(){
+		print ("You tried");
+		int makeTree = Mathf.RoundToInt (Random.Range (0, 2));
+		print (makeTree);
+		if (makeTree == 1)
+		{
+		int treeX = Mathf.RoundToInt (Random.Range (2, width - 2));
+		int treeY = 59;
+		int treeZ = Mathf.RoundToInt (Random.Range (2, width - 2));
+
+			map [treeX, treeY, treeZ] = new block (new Vector3 (treeX, treeY, treeZ), 6);
+			map [treeX, treeY + 1, treeZ] = new block (new Vector3 (treeX, treeY + 1, treeZ), 6);
+			map [treeX, treeY + 2, treeZ] = new block (new Vector3 (treeX, treeY + 2, treeZ), 6);
+			map [treeX, treeY + 3, treeZ] = new block (new Vector3 (treeX, treeY + 3, treeZ), 7);
+			map [treeX, treeY + 4, treeZ] = new block (new Vector3 (treeX, treeY + 4, treeZ), 7);
+			map [treeX, treeY + 3, treeZ - 1] = new block (new Vector3 (treeX, treeY + 3, treeZ - 1), 7);
+			map [treeX, treeY + 3, treeZ + 1] = new block (new Vector3 (treeX, treeY + 3, treeZ + 1), 7);
+			map [treeX - 1, treeY + 3, treeZ] = new block (new Vector3 (treeX - 1, treeY + 3, treeZ), 7);
+			map [treeX + 1, treeY + 3, treeZ] = new block (new Vector3 (treeX + 1, treeY + 3, treeZ), 7);
+			map [treeX - 1, treeY + 3, treeZ - 1] = new block (new Vector3 (treeX - 1, treeY + 3, treeZ - 1), 7);
+			map [treeX - 1, treeY + 3, treeZ + 1] = new block (new Vector3 (treeX - 1, treeY + 3, treeZ + 1), 7);
+			map [treeX + 1, treeY + 3, treeZ - 1] = new block (new Vector3 (treeX + 1, treeY + 3, treeZ - 1), 7);
+			map [treeX + 1, treeY + 3, treeZ + 1] = new block (new Vector3 (treeX + 1, treeY + 3, treeZ + 1), 7);
+
+
+		}
+	}
+
 
     // Update is called once per frame
     void Update() {
