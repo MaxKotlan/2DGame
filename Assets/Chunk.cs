@@ -46,16 +46,24 @@ public class Chunk : MonoBehaviour {
                 {
                     if (y < (groundheight - 2))
                     {
-                        if (Mathf.RoundToInt(Random.Range(0,51)) == 25)
+                        if (y == 0)
                         {
-                            map[x, y, z] = new block(new Vector3(x, y, z), 5);
+                            map[x, y, z] = new block(new Vector3(x, y, z), 9);
                         }
-                        else if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
+                        else
                         {
-                            map[x, y, z] = new block(new Vector3(x, y, z), 2);
-                        } else
-                        {
-                            map[x, y, z] = new block(new Vector3(x, y, z), 3);
+                            if (Mathf.RoundToInt(Random.Range(0, 51)) == 25)
+                            {
+                                map[x, y, z] = new block(new Vector3(x, y, z), 5);
+                            }
+                            else if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
+                            {
+                                map[x, y, z] = new block(new Vector3(x, y, z), 2);
+                            }
+                            else
+                            {
+                                map[x, y, z] = new block(new Vector3(x, y, z), 3);
+                            }
                         }
                     } else
                     {
@@ -179,6 +187,9 @@ public class Chunk : MonoBehaviour {
                 break;
             case 8:
                 uvBase = new Vector2(.75f, .5f);
+                break;
+            case 9:
+                uvBase = new Vector2(0.0f, .25f);
                 break;
         }
 

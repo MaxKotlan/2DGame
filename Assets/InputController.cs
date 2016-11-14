@@ -25,8 +25,8 @@ public class InputController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.X))
         {
             y = false;
-            x = false;
-            z = true;
+            x = true;
+            z = false;
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
