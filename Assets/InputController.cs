@@ -43,12 +43,12 @@ public class InputController : MonoBehaviour {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 chunk.scrollx++;
-                chunk.Regenerate();
+                chunk.RegenerateView();
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 chunk.scrollx--;
-                chunk.Regenerate();
+                chunk.RegenerateView();
             }
         }
         if (y == true)
@@ -56,12 +56,12 @@ public class InputController : MonoBehaviour {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 chunk.scrolly++;
-                chunk.Regenerate();
+                chunk.RegenerateView();
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 chunk.scrolly--;
-                chunk.Regenerate();
+                chunk.RegenerateView();
             }
         }
         if (z == true)
@@ -69,12 +69,12 @@ public class InputController : MonoBehaviour {
             if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 chunk.scrollz++;
-                chunk.Regenerate();
+                chunk.RegenerateView();
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 chunk.scrollz--;
-                chunk.Regenerate();
+                chunk.RegenerateView();
             }
         }
         //chunk.scrolly = Mathf.RoundToInt(Mathf.Ceil(player.transform.position.y + 2));

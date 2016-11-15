@@ -281,6 +281,36 @@ public class Chunk : MonoBehaviour {
         return false;
     }
 
+    public void RegenerateView()
+    {
+        verts.Clear();
+        tris.Clear();
+        uv.Clear();
+        mesh.triangles = tris.ToArray();
+
+        for (int x = 0; x < scrollx; x++)
+        {
+            for (int y = 0; y < scrolly; y++)
+            {
+                for (int z = 0; z < scrollz; z++)
+                {
+                    block block = map[x, y, z];
+                    if (block == null)
+                    {
+                        continue;
+                    }
+
+                    DrawBrick(x, y, z, block);
+                }
+            }
+        }
+
+        mesh.vertices = verts.ToArray();
+        mesh.triangles = tris.ToArray();
+        mesh.uv = uv.ToArray();
+        mesh.RecalculateNormals();
+    }
+
     public void Regenerate()
     {
         verts.Clear();
