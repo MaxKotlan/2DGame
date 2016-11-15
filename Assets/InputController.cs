@@ -3,11 +3,14 @@ using System.Collections;
 
 public class InputController : MonoBehaviour {
 
+   public GameObject player;
+
     Chunk chunk;
     bool x, y, z;
     // Use this for initialization
     void Start () {
         chunk = GetComponent<Chunk>();
+        player = GameObject.FindGameObjectWithTag("Player");
         y = false;
         x = false;
         z = false;
@@ -74,5 +77,6 @@ public class InputController : MonoBehaviour {
                 chunk.Regenerate();
             }
         }
+        //chunk.scrolly = Mathf.RoundToInt(Mathf.Ceil(player.transform.position.y + 2));
     }
 }

@@ -270,7 +270,7 @@ public class Chunk : MonoBehaviour {
     public bool isTransparent(int x, int y, int z)
     {
 
-        if ((x < 0) || (y < 0) || (z < 0) || (x >= scrollx) || (y >= scrolly) || (z >= scrollz) || (map[x, y, z] == null))
+        if ((x < 0) || (y < 0) || (z < 0) || (x >= scrollx) || (y >= scrolly) || (z >= scrollz) || (map[x, y, z] == null) || map[x,y,z].materialID == 7)
         {
             return true;
         }
