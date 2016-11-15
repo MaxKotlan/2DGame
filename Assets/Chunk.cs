@@ -256,6 +256,17 @@ public class Chunk : MonoBehaviour {
 
     }
 
+    public void SetBrink(int x, int y, int z)
+    {
+        if ((x < 0) || (y < 0) || (z < 0) || (x >= scrollx) || (y >= scrolly) || (z >= scrollz) || (map[x, y, z] == null))
+        {
+            return;
+        }
+        map[x, y, z] = null;
+        Regenerate();
+    }
+
+
     public bool isTransparent(int x, int y, int z)
     {
 
