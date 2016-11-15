@@ -108,7 +108,7 @@ public class Chunk : MonoBehaviour {
 			map [treeX, treeY, treeZ] = new block (new Vector3 (treeX, treeY, treeZ), 6);
 			map [treeX, treeY + 1, treeZ] = new block (new Vector3 (treeX, treeY + 1, treeZ), 6);
 			map [treeX, treeY + 2, treeZ] = new block (new Vector3 (treeX, treeY + 2, treeZ), 6);
-			map [treeX, treeY + 3, treeZ] = new block (new Vector3 (treeX, treeY + 3, treeZ), 7);
+			map [treeX, treeY + 3, treeZ] = new block (new Vector3 (treeX, treeY + 3, treeZ), 6);
 			map [treeX, treeY + 4, treeZ] = new block (new Vector3 (treeX, treeY + 4, treeZ), 7);
 			map [treeX, treeY + 3, treeZ - 1] = new block (new Vector3 (treeX, treeY + 3, treeZ - 1), 7);
 			map [treeX, treeY + 3, treeZ + 1] = new block (new Vector3 (treeX, treeY + 3, treeZ + 1), 7);
