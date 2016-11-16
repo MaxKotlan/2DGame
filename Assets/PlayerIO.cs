@@ -16,7 +16,7 @@ public class PlayerIO : MonoBehaviour {
         Ray ray = new Ray(transform.position + transform.forward / 2, transform.forward);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 8f))
+        if (Physics.Raycast(ray, out hit, 3f))
         {
             Vector3 P = hit.point - hit.normal / 2;
             Vector3 blockpos = new Vector3(Mathf.Floor(P.x), Mathf.Floor(P.y), Mathf.Ceil(P.z));
