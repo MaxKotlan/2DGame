@@ -318,11 +318,11 @@ public class Chunk : MonoBehaviour {
         uv.Clear();
         mesh.triangles = tris.ToArray();
 
-        for (int x = 0; x < scrollx; x++)
+        for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < scrolly; y++)
+            for (int y = 0; y < height; y++)
             {
-                for (int z = 0; z < scrollz; z++)
+                for (int z = 0; z < width; z++)
                 {
                     block block = map[x, y, z];
                     if (block == null)
@@ -342,5 +342,7 @@ public class Chunk : MonoBehaviour {
 
         meshCollider.sharedMesh = null;
         meshCollider.sharedMesh = mesh;
+
+        RegenerateView();
     }
 }
