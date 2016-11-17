@@ -49,18 +49,22 @@ public class Chunk : MonoBehaviour {
                     {
                         if (y == 0)
                         {
+                            //if bedrock
                             map[x, y, z] = new block(new Vector3(x, y, z), 9);
                         }
                         else
                         {
+                            //if emerald
                             if (Mathf.RoundToInt(Random.Range(0, 51)) == 25)
                             {
                                 map[x, y, z] = new block(new Vector3(x, y, z), 5);
                             }
+                            //if dirt in ground
                             else if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
                             {
                                 map[x, y, z] = new block(new Vector3(x, y, z), 2);
                             }
+                            //if stone in ground
                             else
                             {
                                 map[x, y, z] = new block(new Vector3(x, y, z), 3);
@@ -70,9 +74,11 @@ public class Chunk : MonoBehaviour {
                     {
                         if (y < (groundheight - 1))
                         {
+                            //solid grass layer
                             map[x, y, z] = new block(new Vector3(x, y, z), 1);
                         } else
                         {
+                            //random grass layer
                             if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
                             {
                                 map[x, y, z] = new block(new Vector3(x, y, z), 1);
