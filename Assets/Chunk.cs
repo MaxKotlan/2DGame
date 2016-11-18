@@ -37,7 +37,7 @@ public class Chunk : MonoBehaviour {
     protected MeshCollider meshCollider;
 
     void Start() {
-        Random.seed = GameObject.Find("SideCam").GetComponent<World>().seed;
+        Random.seed = GameObject.Find("SideCam").GetComponent<World>().seed+Mathf.RoundToInt(cords.x+cords.y+cords.z);
         meshCollider = GetComponent<MeshCollider>();
         map = new block[width, height, width];
         BlockTerrain terrain = new BlockTerrain();
