@@ -18,7 +18,8 @@ public class CameraScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        trans.position = new Vector3(trans.position.x, followObject.transform.position.y+2, trans.position.z);
+        trans.position = new Vector3(followObject.transform.position.x, followObject.transform.position.y+2, trans.position.z);
+        /*
         if (pastScroll == Mathf.CeilToInt(followObject.transform.position.z + 1) && followObject.transform.position.y < 59)
         {
             chunkobj.scrollz = Mathf.CeilToInt(followObject.transform.position.z + 1);
@@ -28,6 +29,6 @@ public class CameraScript : MonoBehaviour {
             chunkobj.scrollz = 20;
             chunkobj.RegenerateView();
         }
-        pastScroll = Mathf.CeilToInt(followObject.transform.position.z + 1);
+        pastScroll = Mathf.CeilToInt(followObject.transform.position.z + 1); */
     }
 }

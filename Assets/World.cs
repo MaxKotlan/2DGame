@@ -148,4 +148,9 @@ public class World : MonoBehaviour {
 	void Update () {
 	
 	}
+
+ //   Vector3 WorldCordinatesToChunk(int x, int y, int z)
+ //   {
+  //     Vector3 asd = Mathf.FloorToInt(chunkprefab.GetComponent<Chunk>().width);
+ //   }
 }
