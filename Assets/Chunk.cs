@@ -24,10 +24,11 @@ public class Chunk : MonoBehaviour {
     public int scrollx = 20;
     public int scrollz = 20;
     public int groundheight = 60;
+    public Vector3 cords = new Vector3(0, 0, 0);
 
     public block[,,] map;
     // Use this for initialization
-    protected Mesh mesh;
+    public Mesh mesh;
 
     protected List<Vector3> verts = new List<Vector3>();
     protected List<int> tris = new List<int>();
@@ -39,97 +40,10 @@ public class Chunk : MonoBehaviour {
         Random.seed = GameObject.Find("SideCam").GetComponent<World>().seed;
         meshCollider = GetComponent<MeshCollider>();
         map = new block[width, height, width];
-        for (int y = 0; y < groundheight; y++)
-        {
-
-            for (int x = 0; x < width; x++)
-            {
-                for (int z = 0; z < width; z++)
-                {
-                    if (y < (groundheight - 2))
-                    {
-                        if (y == 0)
-                        {
-                            //if bedrock
-                            map[x, y, z] = new block(new Vector3(x, y, z), 9);
-                        }
-                        else
-                        {
-                            //if emerald
-                            if (Mathf.RoundToInt(Random.Range(0, 51)) == 25)
-                            {
-                                map[x, y, z] = new block(new Vector3(x, y, z), 5);
-                            }
-                            //if dirt in ground
-                            else if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
-                            {
-                                map[x, y, z] = new block(new Vector3(x, y, z), 2);
-                            }
-                            //if stone in ground
-                            else
-                            {
-                                map[x, y, z] = new block(new Vector3(x, y, z), 3);
-                            }
-                        }
-                    } else
-                    {
-                        if (y < (groundheight - 1))
-                        {
-                            //solid grass layer
-                            map[x, y, z] = new block(new Vector3(x, y, z), 1);
-                        } else
-                        {
-                            //random grass layer
-                            if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
-                            {
-                                map[x, y, z] = new block(new Vector3(x, y, z), 1);
-                            } else
-                            {
-                                map[x, y, z] = null;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        mesh = new Mesh();
-        GetComponent<MeshFilter>().mesh = mesh;
-		int treeLoop = 0;
-		while(treeLoop != 6){
-			Tree();
-			treeLoop++;
-		}
+        BlockTerrain terrain = new BlockTerrain();
+        terrain.generate(this.gameObject);
         Regenerate();
     }
-
-	// Generate random trees
-	public void Tree(){
-		int makeTree = Mathf.RoundToInt (Random.Range (0, 2));
-		print (makeTree);
-		if (makeTree == 1)
-		{
-		int treeX = Mathf.RoundToInt (Random.Range (2, width - 2));
-		int treeY = 59;
-		int treeZ = Mathf.RoundToInt (Random.Range (2, width - 2));
-
-			map [treeX, treeY, treeZ] = new block (new Vector3 (treeX, treeY, treeZ), 6);
-			map [treeX, treeY + 1, treeZ] = new block (new Vector3 (treeX, treeY + 1, treeZ), 6);
-			map [treeX, treeY + 2, treeZ] = new block (new Vector3 (treeX, treeY + 2, treeZ), 6);
-			map [treeX, treeY + 3, treeZ] = new block (new Vector3 (treeX, treeY + 3, treeZ), 6);
-			map [treeX, treeY + 4, treeZ] = new block (new Vector3 (treeX, treeY + 4, treeZ), 7);
-			map [treeX, treeY + 3, treeZ - 1] = new block (new Vector3 (treeX, treeY + 3, treeZ - 1), 7);
-			map [treeX, treeY + 3, treeZ + 1] = new block (new Vector3 (treeX, treeY + 3, treeZ + 1), 7);
-			map [treeX - 1, treeY + 3, treeZ] = new block (new Vector3 (treeX - 1, treeY + 3, treeZ), 7);
-			map [treeX + 1, treeY + 3, treeZ] = new block (new Vector3 (treeX + 1, treeY + 3, treeZ), 7);
-			map [treeX - 1, treeY + 3, treeZ - 1] = new block (new Vector3 (treeX - 1, treeY + 3, treeZ - 1), 7);
-			map [treeX - 1, treeY + 3, treeZ + 1] = new block (new Vector3 (treeX - 1, treeY + 3, treeZ + 1), 7);
-			map [treeX + 1, treeY + 3, treeZ - 1] = new block (new Vector3 (treeX + 1, treeY + 3, treeZ - 1), 7);
-			map [treeX + 1, treeY + 3, treeZ + 1] = new block (new Vector3 (treeX + 1, treeY + 3, treeZ + 1), 7);
-
-
-		}
-	}
-
 
     // Update is called once per frame
     void Update() {
