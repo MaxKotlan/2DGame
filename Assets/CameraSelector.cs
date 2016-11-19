@@ -18,6 +18,32 @@ public class CameraSelector : MonoBehaviour {
 	}
 
 
+	public void mobileCamSelect(string cam){
+		switch (cam) {
+		case "FPCam":
+			FP_view.GetComponent<Camera> ().enabled = true;
+			xSideView.GetComponent<Camera> ().enabled = false;
+			zSideView.GetComponent<Camera> ().enabled = false;
+			Topdown.GetComponent<Camera> ().enabled = false;
+			break;
+
+		case "xCamView":
+			xSideView.GetComponent<Camera>().enabled = true;
+			FP_view.GetComponent<Camera>().enabled = false;
+			zSideView.GetComponent<Camera>().enabled = false;
+			Topdown.GetComponent<Camera>().enabled = false;
+			break;
+
+		case "zCamView":
+			zSideView.GetComponent<Camera> ().enabled = true;
+			FP_view.GetComponent<Camera> ().enabled = false;
+			xSideView.GetComponent<Camera> ().enabled = false;
+			Topdown.GetComponent<Camera> ().enabled = false;
+			break;
+			
+		}
+	}
+
 
 	// Update is called once per frame
 	void Update () {
