@@ -34,7 +34,8 @@ public class CameraScriptx : MonoBehaviour {
 			}
 			counter++;
 			//Locks camera look around on the z
-			FirstPersonCharacter.GetComponent<Transform>().eulerAngles = new Vector3(0,0,0);
+			FirstPersonCharacter.GetComponent<Transform>().eulerAngles = new Vector3(20,90,0);
+
 
 		} else {
 			counter = 0;
