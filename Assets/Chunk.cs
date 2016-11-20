@@ -41,13 +41,113 @@ public class Chunk : MonoBehaviour {
         meshCollider = GetComponent<MeshCollider>();
         map = new block[width, height, width];
         BlockTerrain terrain = new BlockTerrain();
-        terrain.generate(this.gameObject);
+        generateBlocks();
         Regenerate();
     }
 
     // Update is called once per frame
     void Update() {
 
+    }
+
+    public void generateBlocks()
+    {
+    
+        for (int y = 0; y < groundheight; y++)
+        {
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int z = 0; z < width; z++)
+                {
+                    if (y < (groundheight - 2) || cords.y != 0)
+                    {
+                        //if (y == 0)
+                        //{
+                        //    //if bedrock
+                        //    map[x, y, z] = new block(new Vector3(x, y, z), 9);
+                        //}
+                        // else
+                        // {
+                        //if emerald
+                        if (Mathf.RoundToInt(Random.Range(0, 51)) == 25)
+                        {
+                            map[x, y, z] = new block(new Vector3(x, y, z), 5);
+                        }
+                        //if dirt in ground
+                        else if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
+                        {
+                            map[x, y, z] = new block(new Vector3(x, y, z), 2);
+                        }
+                        //if stone in ground
+                        else
+                        {
+                            map[x, y, z] = new block(new Vector3(x, y, z), 3);
+                        }
+                        // }
+                    }
+                    else if (cords.y == 0)
+                    {
+                        if (y < (groundheight - 1))
+                        {
+                            //solid grass layer
+                            map[x, y, z] = new block(new Vector3(x, y, z), 1);
+                        }
+                        else
+                        {
+                            //random grass layer
+                            if (Mathf.RoundToInt(Random.Range(0, 2)) == 1)
+                            {
+                                map[x, y, z] = new block(new Vector3(x, y, z), 1);
+                            }
+                            else
+                            {
+                                map[x, y, z] = null;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        mesh = new Mesh();
+        GetComponent<MeshFilter>().mesh = mesh;
+        if (cords.y == 0)
+        {
+            int treeLoop = 0;
+            while (treeLoop != 6)
+            {
+                Tree();
+                treeLoop++;
+            }
+        }
+    }
+
+    // Generate random trees
+    public void Tree()
+    {
+        int makeTree = Mathf.RoundToInt(Random.Range(0, 2));
+        if (makeTree == 1)
+        {
+            int treeX = Mathf.RoundToInt(Random.Range(2, width - 2));
+            int treeY = groundheight - 1;
+            int treeZ = Mathf.RoundToInt(Random.Range(2, width - 2));
+
+            map[treeX, treeY, treeZ] = new block(new Vector3(treeX, treeY, treeZ), 6);
+            map[treeX, treeY + 1, treeZ] = new block(new Vector3(treeX, treeY + 1, treeZ), 6);
+            map[treeX, treeY + 2, treeZ] = new block(new Vector3(treeX, treeY + 2, treeZ), 6);
+            map[treeX, treeY + 3, treeZ] = new block(new Vector3(treeX, treeY + 3, treeZ), 6);
+            map[treeX, treeY + 4, treeZ] = new block(new Vector3(treeX, treeY + 4, treeZ), 7);
+            map[treeX, treeY + 3, treeZ - 1] = new block(new Vector3(treeX, treeY + 3, treeZ - 1), 7);
+            map[treeX, treeY + 3, treeZ + 1] = new block(new Vector3(treeX, treeY + 3, treeZ + 1), 7);
+            map[treeX - 1, treeY + 3, treeZ] = new block(new Vector3(treeX - 1, treeY + 3, treeZ), 7);
+            map[treeX + 1, treeY + 3, treeZ] = new block(new Vector3(treeX + 1, treeY + 3, treeZ), 7);
+            map[treeX - 1, treeY + 3, treeZ - 1] = new block(new Vector3(treeX - 1, treeY + 3, treeZ - 1), 7);
+            map[treeX - 1, treeY + 3, treeZ + 1] = new block(new Vector3(treeX - 1, treeY + 3, treeZ + 1), 7);
+            map[treeX + 1, treeY + 3, treeZ - 1] = new block(new Vector3(treeX + 1, treeY + 3, treeZ - 1), 7);
+            map[treeX + 1, treeY + 3, treeZ + 1] = new block(new Vector3(treeX + 1, treeY + 3, treeZ + 1), 7);
+
+
+        }
     }
 
     public void DrawBrick(int x, int y, int z, block block)
