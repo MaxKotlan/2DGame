@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerIO : MonoBehaviour {
 
-    public Chunk chunk;
+   // public Chunk chunk;
 
 	// Use this for initialization
 	void Start () {
@@ -25,8 +25,13 @@ public class PlayerIO : MonoBehaviour {
                 int x = Mathf.RoundToInt(blockpos.x);
                 int y = Mathf.RoundToInt(blockpos.y);
                 int z = Mathf.RoundToInt(blockpos.z);
-                print("Thge position is" + x + "," + y + "," + z);
-                chunk.SetBrink(x, y, z);
+				Chunk chunk = Chunk.FindChunk(blockpos);
+				Vector3 j = chunk.worldCordtoChunkCord (new Vector3 (x, y, z));
+				print ("blockpos" + blockpos + "Vector to change " + j);
+				for (int yz = 0; yz < 20; yz++){
+					chunk.setBlock ((int)j.x, yz, (int)j.z, (byte)0);
+				}
+                //chunk.SetBrink(x, y, z);
             }
         }
     }
