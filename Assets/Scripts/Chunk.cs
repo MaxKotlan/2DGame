@@ -56,18 +56,30 @@ public class Chunk : MonoBehaviour {
 	public static byte GetTheoreticalByte(Vector3 pos, Vector3 offset0, Vector3 offset1, Vector3 offset2)
 	{
 		
+		float heightBase = 42;
+		float maxHeight = 62;
+		float heightSwing = maxHeight - heightBase;
 
 		byte brick = 3;
 
 		float meme = CalculateNoiseValue(pos, offset1,  0.09f);
+		float other = CalculateNoiseValue(pos, offset1,  0.03f);
 		float clusterValue = CalculateNoiseValue(pos, offset1,  0.02f);
+		float blobValue = CalculateNoiseValue(pos, offset1,  0.09f);
+		float mountainValue = CalculateNoiseValue(pos, offset1,  0.009f);
 
 		clusterValue *= meme / 2 + clusterValue;
 
+		mountainValue *= mountainValue;
+
+		mountainValue *= heightSwing;
+		mountainValue += heightBase;
+
+		mountainValue += (clusterValue * 10);
 		//clusterValue += (10f - meme);
 
-		if (pos.y < 40) {
-
+		/*if (pos.y < 40) {
+			
 			if (.3 >= clusterValue){
 				if (.5 >= meme) {
 					return 3;
@@ -76,15 +88,34 @@ public class Chunk : MonoBehaviour {
 				}
 			}
 		} else {
-			if (pos.y > 42) {
-				if (meme/3 > .2) {
+			if (pos.y >= 40) {*/
+				if ((mountainValue) > pos.y){
+					if ((mountainValue - 3) > pos.y) {
+						if (.3 >= clusterValue){
+							if (.5 >= meme) {
+								return 3;
+							} else if (.7 > other) {
+								return 2; 
+							} else {
+								return 5;
+							}
+						}
+					} else {
+						Vector3 abovebyte = new Vector3 (pos.x, pos.y + 1, pos.z);
+						byte abovebytebyte = GetTheoreticalByte (abovebyte, offset0, offset1, offset2);
+						if (abovebytebyte != 0) {
+							return 2;
+						} else {
+							return 1;
+						}
+					}
+				} else {
 					return 0;
-				}
-				return 0;
+				}/*
 			} else {
 				return 2;
 			}
-		}
+		}*/
 		return 0;
 	}
 	
@@ -143,24 +174,24 @@ public class Chunk : MonoBehaviour {
 					byte brick = map[x,y,z];
 					// Left wall
 					if (IsTransparent(x - 1, y, z))
-						BuildFace (brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris);
+						BuildFace (brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.left);
 					// Right wall
 					if (IsTransparent(x + 1, y , z))
-						BuildFace (brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.forward, true, verts, uvs, tris);
+						BuildFace (brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.forward, true, verts, uvs, tris, Vector3.right);
 					
 					// Bottom wall
 					if (IsTransparent(x, y - 1 , z))
-						BuildFace (brick, new Vector3(x, y, z), Vector3.forward, Vector3.right, false, verts, uvs, tris);
+						BuildFace (brick, new Vector3(x, y, z), Vector3.forward, Vector3.right, false, verts, uvs, tris, Vector3.down);
 					// Top wall
 					if (IsTransparent(x, y + 1, z))
-						BuildFace (brick, new Vector3(x, y + 1, z), Vector3.forward, Vector3.right, true, verts, uvs, tris);
+						BuildFace (brick, new Vector3(x, y + 1, z), Vector3.forward, Vector3.right, true, verts, uvs, tris, Vector3.up);
 					
 					// Back
 					if (IsTransparent(x, y, z - 1))
-						BuildFace (brick, new Vector3(x, y, z), Vector3.up, Vector3.right, true, verts, uvs, tris);
+						BuildFace (brick, new Vector3(x, y, z), Vector3.up, Vector3.right, true, verts, uvs, tris, Vector3.back);
 					// Front
 					if (IsTransparent(x, y, z + 1))
-						BuildFace (brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris);
+						BuildFace (brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
 					
 					
 				}
@@ -181,7 +212,7 @@ public class Chunk : MonoBehaviour {
 		yield return 0;
 		
 	}
-	public virtual void BuildFace(byte brick, Vector3 corner, Vector3 up, Vector3 right, bool reversed, List<Vector3> verts, List<Vector2> uvs, List<int> tris)
+	public virtual void BuildFace(byte brick, Vector3 corner, Vector3 up, Vector3 right, bool reversed, List<Vector3> verts, List<Vector2> uvs, List<int> tris, Vector3 direction)
 	{
 		int index = verts.Count;
 		
@@ -190,17 +221,66 @@ public class Chunk : MonoBehaviour {
 		verts.Add (corner + up + right);
 		verts.Add (corner + right);
 		
-		Vector2 uvWidth = new Vector2(0.25f, 0.25f);
-		Vector2 uvCorner = new Vector2(0.00f, 0.75f);
+		Vector2 uvBase = new Vector2(0.0f, .75f);
 
+		int matid = brick;
+		if (matid == 1 && direction == Vector3.up)
+		{
+			matid = 8;
+		}
 
-		uvCorner.x += (float)(brick - 1) / 4;
-		
-		uvs.Add(uvCorner);
-		uvs.Add(new Vector2(uvCorner.x, uvCorner.y + uvWidth.y));
-		uvs.Add(new Vector2(uvCorner.x + uvWidth.x, uvCorner.y + uvWidth.y));
-		uvs.Add(new Vector2(uvCorner.x + uvWidth.x, uvCorner.y));
-		
+		switch (matid)
+		{
+		case 1:
+			uvBase = new Vector2(0.0f, .75f);
+			break;
+		case 2:
+			uvBase = new Vector2(.25f, .75f);
+			break;
+		case 3:
+			uvBase = new Vector2(.5f, .75f);
+			break;
+		case 4:
+			uvBase = new Vector2(.75f, .75f);
+			break;
+		case 5:
+			uvBase = new Vector2(0.0f, .5f);
+			break;
+		case 6:
+			uvBase = new Vector2(.25f, .5f);
+			break;
+		case 7:
+			uvBase = new Vector2(.5f, .5f);
+			break;
+		case 8:
+			uvBase = new Vector2(.75f, .5f);
+			break;
+		case 9:
+			uvBase = new Vector2(0.0f, .25f);
+			break;
+		}
+
+		/*
+		if (direction == Vector3.right)
+		{
+			uvs.Add(uvBase + new Vector2(.25f, .25f));
+			uvs.Add(uvBase + new Vector2(.25f, 0));
+			uvs.Add(uvBase + new Vector2(0, .25f));
+			uvs.Add(uvBase);
+		} else if (direction == Vector3.left)
+		{*/
+			uvs.Add(uvBase);
+		uvs.Add(uvBase + new Vector2(0, .25f));
+		uvs.Add(uvBase + new Vector2(.25f, .25f));
+			uvs.Add(uvBase + new Vector2(.25f, 0));
+		/*} else 
+		{ 
+			uvs.Add(uvBase);
+			uvs.Add(uvBase + new Vector2(.25f, 0));
+			uvs.Add(uvBase + new Vector2(0, .25f));
+			uvs.Add(uvBase + new Vector2(.25f, .25f));
+		}*/
+
 		if (reversed)
 		{
 			tris.Add(index + 0);
