@@ -6,7 +6,7 @@ public class World : MonoBehaviour {
 	public static World currentWorld;
 	
 	public int chunkWidth = 20, chunkHeight = 20, seed = 0;
-	public float viewRange = 50;
+	public float viewRange = 100;
 	
 	
 	public Chunk chunkFab;
@@ -22,11 +22,11 @@ public class World : MonoBehaviour {
 	void Update () {
 		
 		
-		for (float x = transform.position.x - viewRange; x < transform.position.x + viewRange; x+= chunkWidth)
+		for (float x = -2*chunkWidth; x < 2*chunkWidth; x+= chunkWidth)
 		{
 			for (float y = transform.position.y - viewRange; y < transform.position.y + viewRange; y+= chunkHeight)
 			{
-				for (float z = transform.position.z - viewRange; z < transform.position.z + viewRange; z+= chunkWidth)
+				for (float z = -2*chunkWidth; z < 2*chunkWidth; z+= chunkWidth)
 				{
 				
 				

@@ -22,8 +22,9 @@ public class PlayerIO : MonoBehaviour {
             Vector3 blockpos = new Vector3(Mathf.Floor(P.x), Mathf.Floor(P.y), Mathf.Ceil(P.z));
             if (Input.GetMouseButtonDown(0))
             {
+				blockpos += hit.normal;
                 int x = Mathf.RoundToInt(blockpos.x);
-                int y = Mathf.RoundToInt(blockpos.y)+1;
+                int y = Mathf.RoundToInt(blockpos.y);
                 int z = Mathf.RoundToInt(blockpos.z);
 				Chunk chunk = Chunk.FindChunk(blockpos);
 				Vector3 j = chunk.worldCordtoChunkCord (new Vector3 (x, y, z));
