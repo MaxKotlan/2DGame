@@ -19,7 +19,7 @@ public class PlayerIO : MonoBehaviour {
         if (Physics.Raycast(ray, out hit, 8f))
         {
             Vector3 P = hit.point - hit.normal / 2;
-            Vector3 blockpos = new Vector3(Mathf.Floor(P.x), Mathf.Floor(P.y), Mathf.Ceil(P.z));
+            Vector3 blockpos = new Vector3(Mathf.Floor(P.x), Mathf.Floor(P.y), Mathf.Ceil(P.z - 1));
 			Chunk chunk = Chunk.FindChunk(blockpos);
 			print ("Chunk Cords" + chunk.transform.position);
             if (Input.GetMouseButtonDown(0))
@@ -27,9 +27,8 @@ public class PlayerIO : MonoBehaviour {
 				blockpos += hit.normal;
                 int x = Mathf.FloorToInt(blockpos.x);
 				int y = Mathf.FloorToInt(blockpos.y);
-                int z = Mathf.CeilToInt(blockpos.z);
-				z--;
-				Vector3 j = chunk.worldCordtoChunkCord (new Vector3 (x, y, z));
+                int z = Mathf.CeilToInt(blockpos.z -2);
+				Vector3 j = chunk.worldCordtoChunkCord (blockpos);
 				print ("blockpos" + blockpos + "Vector to change " + j);
 				chunk.setBlock (Mathf.FloorToInt(j.x), Mathf.FloorToInt(j.y), Mathf.FloorToInt(j.z), (byte)4);
                 //chunk.SetBrink(x, y, z);
@@ -37,10 +36,9 @@ public class PlayerIO : MonoBehaviour {
 			if (Input.GetMouseButtonDown (1)) {
 				int x = Mathf.RoundToInt(blockpos.x);
 				int y = Mathf.RoundToInt(blockpos.y);
-				int z = Mathf.RoundToInt(blockpos.z);
-				z--;
+				int z = Mathf.RoundToInt(blockpos.z - 2);
 				//Chunk chunk = Chunk.FindChunk(blockpos);
-				Vector3 j = chunk.worldCordtoChunkCord (new Vector3 (x, y, z));
+				Vector3 j = chunk.worldCordtoChunkCord (blockpos);
 				print ("blockpos" + blockpos + "Vector to change " + j);
 				chunk.setBlock (Mathf.FloorToInt(j.x), Mathf.FloorToInt(j.y), Mathf.FloorToInt(j.z), (byte)0);
 			}

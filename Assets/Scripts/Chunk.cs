@@ -78,6 +78,7 @@ public class Chunk : MonoBehaviour {
 		mountainValue += (clusterValue * 10);
 		//clusterValue += (10f - meme);
 
+
 		/*if (pos.y < 40) {
 			
 			if (.3 >= clusterValue){
@@ -361,9 +362,17 @@ public class Chunk : MonoBehaviour {
 		
 	}
 
-	public Vector3 worldCordtoChunkCord(Vector3 worldcord){
-		Vector3 chunBase = this.gameObject.transform.position;
-		Vector3 chunkCords = worldcord - (chunBase);
+	public Vector3 worldCordtoChunkCord(Vector3 worldPos){
+		//Vector3 chunBase = this.gameObject.transform.position;
+		//Vector3 chunkCords = worldcord - (chunBase);
+		worldPos -= transform.position;
+		int x = Mathf.FloorToInt(worldPos.x);
+		int y = Mathf.FloorToInt(worldPos.y);
+		int z = Mathf.FloorToInt(worldPos.z);
+		Vector3 chunkCords = new Vector3 (x,y,z);
+		//if (chunkCords.z == -1) {
+		//	chunkCords.z = width -1;
+		//}
 		return chunkCords;
 	}
 }
