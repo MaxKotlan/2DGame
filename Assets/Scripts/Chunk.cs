@@ -326,11 +326,10 @@ public class Chunk : MonoBehaviour {
 
 			Vector3 worldPos = new Vector3(x, y, z) + transform.position;
 			Chunk chunk = Chunk.FindChunk(worldPos);
-			if (z >= width && worldPos.z == 60) {
-				return 0;
-			}
-			if (chunk == this)
-				return GetTheoreticalByte (worldPos);
+			//if (z == width && worldPos.z == 40) {
+			//	return 1;
+			//}
+			return 0;
 			if (chunk == null) 
 			{
 				return GetTheoreticalByte(worldPos);
