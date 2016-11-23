@@ -316,6 +316,10 @@ public class Chunk : MonoBehaviour {
 
 	public void setBlock(int x, int y, int z, byte block){
 		map [x, y, z] = block;
+		if ((x < 0) || (z < 0) || (y < 0) || (y >= height) || (x >= width) || (z >= width)) {
+			Chunk chunk = Chunk.FindChunk(new Vector3(x+1,y+1,z+1));
+			StartCoroutine (chunk.CreateVisualMesh ());
+		}
 		StartCoroutine(CreateVisualMesh ());
 	}
 
@@ -331,6 +335,7 @@ public class Chunk : MonoBehaviour {
 			//	return 1;
 			//}
 			return 0;
+
 			if (chunk == null) 
 			{
 				return GetTheoreticalByte(worldPos);
