@@ -315,7 +315,7 @@ public class Chunk : MonoBehaviour {
 
 	public void setBlock(int x, int y, int z, byte block){
 		map [x, y, z] = block;
-		CreateVisualMesh ();
+		StartCoroutine(CreateVisualMesh ());
 	}
 
 	public virtual byte GetByte (int x, int y , int z)
@@ -363,8 +363,12 @@ public class Chunk : MonoBehaviour {
 	}
 
 	public Vector3 worldCordtoChunkCord(Vector3 worldcord){
-		Vector3 chunkCords = worldcord - this.gameObject.transform.position;
-		chunkCords.y = 3;
+		Vector3 chunBase = this.gameObject.transform.position;
+		chunBase.z++;
+		Vector3 chunkCords = worldcord - (chunBase);
+		if (chunkCords.z == -1) {
+			chunkCords.z = width - 1;
+		}
 		return chunkCords;
 	}
 }

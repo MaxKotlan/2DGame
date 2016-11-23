@@ -41,7 +41,9 @@ public class World : MonoBehaviour {
 				
 				chunk = (Chunk)Instantiate(chunkFab, pos, Quaternion.identity);
 				
-				
+//				for (int i = 0; i < chunkWidth * chunkWidth; i++) {
+//					chunk.setBlock (Mathf.RoundToInt (Random.RandomRange (0, chunkWidth)), Mathf.RoundToInt (Random.RandomRange (0, chunkHeight)), Mathf.RoundToInt (Random.RandomRange (0, chunkWidth)), 4);
+//				}
 				
 				}
 			}

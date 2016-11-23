@@ -23,16 +23,23 @@ public class PlayerIO : MonoBehaviour {
             if (Input.GetMouseButtonDown(0))
             {
                 int x = Mathf.RoundToInt(blockpos.x);
-                int y = Mathf.RoundToInt(blockpos.y);
+                int y = Mathf.RoundToInt(blockpos.y)+1;
                 int z = Mathf.RoundToInt(blockpos.z);
 				Chunk chunk = Chunk.FindChunk(blockpos);
 				Vector3 j = chunk.worldCordtoChunkCord (new Vector3 (x, y, z));
 				print ("blockpos" + blockpos + "Vector to change " + j);
-				for (int yz = 0; yz < 20; yz++){
-					chunk.setBlock ((int)j.x, yz, (int)j.z, (byte)0);
-				}
+				chunk.setBlock (Mathf.FloorToInt(j.x), Mathf.FloorToInt(j.y), Mathf.FloorToInt(j.z), (byte)4);
                 //chunk.SetBrink(x, y, z);
             }
+			if (Input.GetMouseButtonDown (1)) {
+				int x = Mathf.RoundToInt(blockpos.x);
+				int y = Mathf.RoundToInt(blockpos.y);
+				int z = Mathf.RoundToInt(blockpos.z);
+				Chunk chunk = Chunk.FindChunk(blockpos);
+				Vector3 j = chunk.worldCordtoChunkCord (new Vector3 (x, y, z));
+				print ("blockpos" + blockpos + "Vector to change " + j);
+				chunk.setBlock (Mathf.FloorToInt(j.x), Mathf.FloorToInt(j.y), Mathf.FloorToInt(j.z), (byte)0);
+			}
         }
     }
 }
