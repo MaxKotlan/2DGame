@@ -354,7 +354,7 @@ public class Chunk : MonoBehaviour {
 		{
 			Vector3 cpos = chunks[a].transform.position;
 			
-			if ( ( pos.x < cpos.x) || (pos.z < cpos.z) || (pos.x >= cpos.x + width) || (pos.z >= cpos.z + width) ) continue;
+			if ( ( pos.x < cpos.x) || ( pos.y < cpos.y) || (pos.z < cpos.z) || (pos.x >= cpos.x + width) || (pos.y >= cpos.y + height) || (pos.z >= cpos.z + width)) continue;
 			return chunks[a];
 			
 		}
@@ -364,11 +364,7 @@ public class Chunk : MonoBehaviour {
 
 	public Vector3 worldCordtoChunkCord(Vector3 worldcord){
 		Vector3 chunBase = this.gameObject.transform.position;
-		chunBase.z++;
 		Vector3 chunkCords = worldcord - (chunBase);
-		if (chunkCords.z == -1) {
-			chunkCords.z = width - 1;
-		}
 		return chunkCords;
 	}
 }
