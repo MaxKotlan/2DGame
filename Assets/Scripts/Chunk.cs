@@ -16,15 +16,39 @@ public class Chunk : NetworkBehaviour {
 		get { return World.currentWorld.chunkHeight; }
 	}
     public byte[,,] map;
+
+    struct block
+    {
+        public Vector3 position;
+        public byte material;
+    };
+
+    class BlockDifferantiator : SyncListStruct<block> { };
+
+    BlockDifferantiator blockdifferntiator = new BlockDifferantiator();
+
 	public Mesh visualMesh;
 	protected MeshRenderer meshRenderer;
 	protected MeshCollider meshCollider;
 	protected MeshFilter meshFilter;
 
-	// Use this for initialization
-	void Start () {
-		
-		chunks.Add(this);
+    private void OnIntChanged(SyncListStruct<block>.Operation op, int index)
+    {
+        Debug.Log("list changed " + op);
+        map[(int)blockdifferntiator[index].position.x, (int)blockdifferntiator[index].position.y, (int)blockdifferntiator[index].position.z] = blockdifferntiator[index].material;
+        StartCoroutine(CreateVisualMesh());
+    }
+
+    public override void OnStartClient()
+    {
+        blockdifferntiator.Callback = OnIntChanged;
+    }
+
+    // Use this for initialization
+    void Start () {
+
+
+        chunks.Add(this);
         print("World seed" + World.currentWorld.seed);
 		meshRenderer = GetComponent<MeshRenderer>();
 		meshCollider = GetComponent<MeshCollider>();
@@ -316,6 +340,10 @@ public class Chunk : NetworkBehaviour {
 
 	public void setBlock(int x, int y, int z, byte block){
 		map [x, y, z] = block;
+        block blk = new block();
+        blk.position = new Vector3(x, y, z);
+        blk.material = block;
+        blockdifferntiator.Add(blk);
 		if ((x < 0) || (z < 0) || (y < 0) || (y >= height) || (x >= width) || (z >= width)) {
 			Chunk chunk = Chunk.FindChunk(new Vector3(x+1,y+1,z+1));
 			StartCoroutine (chunk.CreateVisualMesh ());

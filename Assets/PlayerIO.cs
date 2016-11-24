@@ -15,7 +15,7 @@ public class PlayerIO : MonoBehaviour {
     {
         Ray ray = new Ray(transform.position + transform.forward / 2, transform.forward);
         RaycastHit hit;
-		int matid = Mathf.RoundToInt(Random.RandomRange (1, 8));
+		int matid = Mathf.RoundToInt(4);
         if (Physics.Raycast(ray, out hit, 120f))
         {
             Vector3 P = hit.point - hit.normal / 2;

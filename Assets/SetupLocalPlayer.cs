@@ -11,7 +11,8 @@ public class SetupLocalPlayer : NetworkBehaviour {
 			GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController> ().enabled = true;
 			//GetComponent<CharacterController> ().enabled = true;
 			transform.FindChild ("FirstPersonCharacter").GetComponent<Camera> ().enabled = true;
-			transform.FindChild ("FirstPersonCharacter").GetComponent<PlayerIO> ().enabled = true;
+            transform.FindChild("FirstPersonCharacter").GetComponent<AudioListener>().enabled = true;
+            transform.FindChild ("FirstPersonCharacter").GetComponent<PlayerIO> ().enabled = true;
             GetComponent<World>().enabled = true;
             players.Add (this.gameObject);
 		} else {
