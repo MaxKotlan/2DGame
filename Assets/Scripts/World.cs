@@ -12,7 +12,7 @@ public class World : MonoBehaviour {
 	public Chunk chunkFab;
 	
 	// Use this for initialization
-	void Awake () {
+	void Start () {
 		currentWorld = this;
 		if (seed == 0)
 			seed = Random.Range(0, int.MaxValue);
