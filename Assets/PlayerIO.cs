@@ -15,7 +15,7 @@ public class PlayerIO : MonoBehaviour {
     {
         Ray ray = new Ray(transform.position + transform.forward / 2, transform.forward);
         RaycastHit hit;
-
+		int matid = Mathf.RoundToInt(Random.RandomRange (1, 8));
         if (Physics.Raycast(ray, out hit, 120f))
         {
             Vector3 P = hit.point - hit.normal / 2;
@@ -31,7 +31,7 @@ public class PlayerIO : MonoBehaviour {
 					l.y = l.y -1;
 					if (j != k && j != l) {
 						print ("blockpos" + blockpos + "Vector to change " + j);
-						chunk.setBlock (Mathf.FloorToInt (j.x), Mathf.FloorToInt (j.y), Mathf.FloorToInt (j.z), (byte)4);
+						chunk.setBlock (Mathf.FloorToInt (j.x), Mathf.FloorToInt (j.y), Mathf.FloorToInt (j.z), (byte)matid);
 					}
                 //chunk.SetBrink(x, y, z);
             }

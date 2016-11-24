@@ -307,6 +307,7 @@ public class Chunk : MonoBehaviour {
 		byte brick = GetByte(x,y,z);
 		switch (brick)
 		{
+		case 7:
 		case 0: 
 			return true;
 		default:
