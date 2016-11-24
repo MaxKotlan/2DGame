@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 using SimplexNoise;
 
 [RequireComponent (typeof(MeshRenderer))]
 [RequireComponent (typeof(MeshCollider))]
 [RequireComponent (typeof(MeshFilter))]
-public class Chunk : MonoBehaviour {
-	
-	public static List<Chunk> chunks = new List<Chunk>();
-	public static int width {
+public class Chunk : NetworkBehaviour {
+    public static List<Chunk> chunks = new List<Chunk>();
+    public static int width {
 		get { return World.currentWorld.chunkWidth; }
 	}
 	public static int height {
 		get { return World.currentWorld.chunkHeight; }
 	}
-	public byte[,,] map;
+    public byte[,,] map;
 	public Mesh visualMesh;
 	protected MeshRenderer meshRenderer;
 	protected MeshCollider meshCollider;
@@ -25,7 +25,7 @@ public class Chunk : MonoBehaviour {
 	void Start () {
 		
 		chunks.Add(this);
-		
+        print("World seed" + World.currentWorld.seed);
 		meshRenderer = GetComponent<MeshRenderer>();
 		meshCollider = GetComponent<MeshCollider>();
 		meshFilter = GetComponent<MeshFilter>();
@@ -130,7 +130,7 @@ public class Chunk : MonoBehaviour {
 		
 		
 		
-		for (int x = 0; x < World.currentWorld.chunkWidth; x++)
+		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
@@ -154,7 +154,6 @@ public class Chunk : MonoBehaviour {
 		return Mathf.Max(0, Noise.Generate(noiseX, noiseY, noiseZ));
 		
 	}
-	
 	
 	public virtual IEnumerator CreateVisualMesh() {
 		visualMesh = new Mesh();
