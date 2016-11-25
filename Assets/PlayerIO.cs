@@ -6,6 +6,7 @@ public class PlayerIO : NetworkBehaviour {
 
 	Transform cameraTransform;
    // public Chunk chunk;
+	int matid = 1;
 	// Use this for initialization
 	void Start () {
 		cameraTransform = transform.FindChild ("FirstPersonCharacter").GetComponent<Transform> ();
@@ -16,8 +17,13 @@ public class PlayerIO : NetworkBehaviour {
     {
 		Ray ray = new Ray(cameraTransform.position + cameraTransform.forward / 2, cameraTransform.forward);
         RaycastHit hit;
-		int matid = Mathf.RoundToInt(4);
-        if (Physics.Raycast(ray, out hit, 120f))
+		if (Input.GetAxis ("Mouse ScrollWheel") > 0 && matid < 9) {
+			matid++;
+		}
+		if (Input.GetAxis ("Mouse ScrollWheel") < 0 && matid > 0) {
+			matid--;
+		}
+        if (Physics.Raycast(ray, out hit, 8f))
         {
             Vector3 P = hit.point - hit.normal / 2;
             Vector3 blockpos = new Vector3(Mathf.Floor(P.x), Mathf.Floor(P.y), Mathf.Ceil(P.z - 1));
