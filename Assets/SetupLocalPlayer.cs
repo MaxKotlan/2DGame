@@ -12,7 +12,7 @@ public class SetupLocalPlayer : NetworkBehaviour {
 			//GetComponent<CharacterController> ().enabled = true;
 			transform.FindChild ("FirstPersonCharacter").GetComponent<Camera> ().enabled = true;
             transform.FindChild("FirstPersonCharacter").GetComponent<AudioListener>().enabled = true;
-            transform.FindChild ("FirstPersonCharacter").GetComponent<PlayerIO> ().enabled = true;
+			GetComponent<PlayerIO> ().enabled = true;
             GetComponent<World>().enabled = true;
             players.Add (this.gameObject);
 		} else {
