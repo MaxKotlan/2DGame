@@ -29,10 +29,6 @@ public class PlayerIO : NetworkBehaviour {
 				}
             }
 			if (Input.GetMouseButtonDown (1)) {
-				Chunk chunk = Chunk.FindChunk(blockpos);
-				print ("Chunk Cords" + chunk.transform.position);
-				Vector3 j = chunk.worldCordtoChunkCord (blockpos);
-				print ("blockpos" + blockpos + "Vector to change " + j);
 				CmdSetBlock ((int)blockpos.x, (int)blockpos.y, (int)blockpos.z, (byte)0);
 			}
         }
@@ -46,7 +42,7 @@ public class PlayerIO : NetworkBehaviour {
 		Chunk chunk = Chunk.FindChunk (blockpos);
 		print ("Chunk Cords" + chunk.transform.position);
 		Vector3 j = chunk.worldCordtoChunkCord (blockpos);
-		Vector3 k = chunk.worldCordtoChunkCord (transform.position);
+		Vector3 k = chunk.worldCordtoChunkCord (transform.position + new Vector3(0f,.8f,0f));
 		Vector3 l = k;
 		l.y = l.y - 1;
 		if (j != k && j != l) {

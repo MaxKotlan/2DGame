@@ -174,6 +174,12 @@ public class Chunk : NetworkBehaviour {
 				}
 			}
 		}
+		for (int i = 0; i < blockdifferntiator.Count; i++) {
+			int x = (int)blockdifferntiator [i].position.x;
+			int y = (int)blockdifferntiator [i].position.y;
+			int z = (int)blockdifferntiator [i].position.z;
+			map[x, y, z] = blockdifferntiator[i].material;
+		}
 		
 	}
 	
