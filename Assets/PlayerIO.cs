@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
 
 public class PlayerIO : NetworkBehaviour {
+
+	public GameObject txtRef;
+	Text textreference;
+	string[] blockNames = new string[]{"Grass","Dirt","Stone","Sand","Diamond","Wood","Leaf","Grass Top","Bedrock"};
 
 	Transform cameraTransform;
    // public Chunk chunk;
@@ -10,19 +15,34 @@ public class PlayerIO : NetworkBehaviour {
 	// Use this for initialization
 	void Start () {
 		cameraTransform = transform.FindChild ("FirstPersonCharacter").GetComponent<Transform> ();
+		textreference = txtRef.GetComponent<Text>();
 	}
+		
 
     // Update is called once per frame
     void Update()
     {
 		Ray ray = new Ray(cameraTransform.position + cameraTransform.forward / 2, cameraTransform.forward);
         RaycastHit hit;
-		if (Input.GetAxis ("Mouse ScrollWheel") > 0 && matid < 9) {
-			matid++;
+		if (Input.GetAxis ("Mouse ScrollWheel") > 0) {
+			if (matid < 10) {
+				matid++;
+			} else {
+				matid = 1;
+			}
 		}
-		if (Input.GetAxis ("Mouse ScrollWheel") < 0 && matid > 0) {
-			matid--;
+		if (Input.GetAxis ("Mouse ScrollWheel") < 0) {
+			if (matid > 0) {
+				matid--;
+			} else {
+				matid = 9;
+			}
+
 		}
+		textreference.text = blockNames[matid - 1]; 
+		textreference.canvasRenderer.Clear ();
+
+
         if (Physics.Raycast(ray, out hit, 8f))
         {
             Vector3 P = hit.point - hit.normal / 2;
