@@ -5,8 +5,8 @@ using UnityEngine.Networking;
 
 public class PlayerIO : NetworkBehaviour {
 
-	public GameObject BlockSelectionText;
-    GameObject blockselectioninstance;
+	//public GameObject BlockSelectionText;
+    //GameObject blockselectioninstance;
 	Text textreference;
 	string[] blockNames = new string[]{"Grass","Dirt","Stone","Sand","Diamond","Wood","Leaf","Grass Top","Bedrock"};
 
@@ -15,10 +15,12 @@ public class PlayerIO : NetworkBehaviour {
 	int matid = 1;
 	// Use this for initialization
 	void Start () {
-        blockselectioninstance = Instantiate(BlockSelectionText);
+       // blockselectioninstance = Instantiate(BlockSelectionText);
+        GameObject canvas = GameObject.Find("BlockText");
+        
         cameraTransform = transform.FindChild("FirstPersonCharacter").GetComponent<Transform>();
-        textreference = blockselectioninstance.GetComponent<Text>();
-        textreference.color = Color.black;
+        textreference = canvas.GetComponent<Text>();
+        textreference.color = Color.white;
 	}
 		
 
