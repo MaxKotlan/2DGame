@@ -100,8 +100,9 @@ public class Chunk : NetworkBehaviour {
 		float clusterValue = CalculateNoiseValue(pos, offset1,  0.02f);
 		float blobValue = CalculateNoiseValue(pos, offset1,  0.09f);
 		float mountainValue = CalculateNoiseValue(pos, offset1,  0.009f);
+        float caves = CalculateNoiseValue(pos, offset1, Random.Range(0, .009f));
 
-		clusterValue *= meme / 2 + clusterValue;
+        clusterValue *= meme / 2 + clusterValue;
 
 		mountainValue *= mountainValue;
 
@@ -125,7 +126,8 @@ public class Chunk : NetworkBehaviour {
 			if (pos.y >= 40) {*/
 				if ((mountainValue) > pos.y){
 					if ((mountainValue - 3) > pos.y) {
-						if (.3 >= clusterValue){
+						if (.3 >= caves)
+                        {
 							if (.5 >= meme) {
 								return 3;
 							} else if (.7 > other) {
