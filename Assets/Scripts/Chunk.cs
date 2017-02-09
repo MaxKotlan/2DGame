@@ -377,7 +377,7 @@ public class Chunk : NetworkBehaviour {
 			//if (z == width && worldPos.z == 40) {
 			//	return 1;
 			//}
-			return 0;
+			//return 0;
 
 			if (chunk == null) 
 			{
