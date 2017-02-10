@@ -59,7 +59,7 @@ public class PlayerIO : NetworkBehaviour {
             Chunk surroundingChunkUp = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(j.x)), Mathf.FloorToInt(j.y) + 1, Mathf.FloorToInt(j.z)));
             Chunk surroundingChunkDown = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(j.x)), Mathf.FloorToInt(j.y) - 1, Mathf.FloorToInt(j.z)));
             Chunk surroundingChunkForward = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(j.x)), Mathf.FloorToInt(j.y), Mathf.FloorToInt(j.z) + 1));
-            Chunk surroundingChunkBack = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(j.x) - 1), Mathf.FloorToInt(j.y), Mathf.FloorToInt(j.z) - 1));
+            Chunk surroundingChunkBack = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(j.x)), Mathf.FloorToInt(j.y), Mathf.FloorToInt(j.z) - 1));
             if (surroundingChunkLeft.GetInstanceID() != chunk.GetInstanceID())
             {
                 StartCoroutine(surroundingChunkLeft.CreateVisualMesh());

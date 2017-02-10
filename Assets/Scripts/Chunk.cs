@@ -7,6 +7,7 @@ using SimplexNoise;
 [RequireComponent (typeof(MeshRenderer))]
 [RequireComponent (typeof(MeshCollider))]
 [RequireComponent (typeof(MeshFilter))]
+
 public class Chunk : NetworkBehaviour {
     public static List<Chunk> chunks = new List<Chunk>();
     public static int width {
@@ -15,6 +16,22 @@ public class Chunk : NetworkBehaviour {
 	public static int height {
 		get { return World.currentWorld.chunkHeight; }
 	}
+
+    public static int renderx
+    {
+        get { return World.currentWorld.renderx;  }
+    }
+
+    public static int rendery
+    {
+        get { return World.currentWorld.rendery; }
+    }
+
+    public static int renderz
+    {
+        get { return World.currentWorld.renderz; }
+    }
+    
     public byte[,,] map;
 
     struct block
@@ -31,6 +48,11 @@ public class Chunk : NetworkBehaviour {
 	protected MeshRenderer meshRenderer;
 	protected MeshCollider meshCollider;
 	protected MeshFilter meshFilter;
+
+    public Mesh wireFrameMesh;
+    protected MeshRenderer meshRendererWireFrame;
+    protected MeshCollider meshColliderWireFrame;
+    protected MeshFilter meshFilterWireFrame;
 
     private void OnIntChanged(SyncListStruct<block>.Operation op, int index)
     {
@@ -62,10 +84,13 @@ public class Chunk : NetworkBehaviour {
 		meshRenderer = GetComponent<MeshRenderer>();
 		meshCollider = GetComponent<MeshCollider>();
 		meshFilter = GetComponent<MeshFilter>();
-		
-		
-	
-		CalculateMapFromScratch();
+  
+        meshRendererWireFrame = this.transform.FindChild("wireframe").GetComponent<MeshRenderer>();
+        meshColliderWireFrame = this.transform.FindChild("wireframe").GetComponent<MeshCollider>();
+        meshFilterWireFrame = this.transform.FindChild("wireframe").GetComponent<MeshFilter>();
+
+
+        CalculateMapFromScratch();
 		StartCoroutine(CreateVisualMesh());
 		
 	}
@@ -196,43 +221,75 @@ public class Chunk : NetworkBehaviour {
 	
 	public virtual IEnumerator CreateVisualMesh() {
 		visualMesh = new Mesh();
+        wireFrameMesh = new Mesh();
 		
 		List<Vector3> verts = new List<Vector3>();
 		List<Vector2> uvs = new List<Vector2>();
 		List<int> tris = new List<int>();
-		
-		
-		for (int x = 0; x < width; x++)
+
+        List<Vector3> vertsW = new List<Vector3>();
+        List<Vector2> uvsW = new List<Vector2>();
+        List<int> trisW = new List<int>();
+
+        for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
 				for (int z = 0; z < width; z++)
 				{
 					if (map[x,y,z] == 0) continue;
-					
-					byte brick = map[x,y,z];
-					// Left wall
-					if (IsTransparent(x - 1, y, z))
-						BuildFace (brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.left);
-					// Right wall
-					if (IsTransparent(x + 1, y , z))
-						BuildFace (brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.forward, true, verts, uvs, tris, Vector3.right);
-					
-					// Bottom wall
-					if (IsTransparent(x, y - 1 , z))
-						BuildFace (brick, new Vector3(x, y, z), Vector3.forward, Vector3.right, false, verts, uvs, tris, Vector3.down);
-					// Top wall
-					if (IsTransparent(x, y + 1, z))
-						BuildFace (brick, new Vector3(x, y + 1, z), Vector3.forward, Vector3.right, true, verts, uvs, tris, Vector3.up);
-					
-					// Back
-					if (IsTransparent(x, y, z - 1))
-						BuildFace (brick, new Vector3(x, y, z), Vector3.up, Vector3.right, true, verts, uvs, tris, Vector3.back);
-					// Front
-					if (IsTransparent(x, y, z + 1))
-						BuildFace (brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
-					
-					
+
+                    Vector3 worldPos = new Vector3(x, y, z) + transform.position;
+                    if ((worldPos.x > renderx || worldPos.z > renderz || worldPos.x < 0 || worldPos.z < 0))
+                    {
+                        byte brick = map[x, y, z];
+                        // Left wall
+                        if (IsTransparent(x - 1, y, z))
+                            BuildFace(brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, vertsW, uvsW, trisW, Vector3.left);
+                        // Right wall
+                        if (IsTransparent(x + 1, y, z))
+                            BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.forward, true, vertsW, uvsW, trisW, Vector3.right);
+
+                        // Bottom wall
+                        if (IsTransparent(x, y - 1, z))
+                            BuildFace(brick, new Vector3(x, y, z), Vector3.forward, Vector3.right, false, vertsW, uvsW, trisW, Vector3.down);
+                        // Top wall
+                        if (IsTransparent(x, y + 1, z))
+                            BuildFace(brick, new Vector3(x, y + 1, z), Vector3.forward, Vector3.right, true, vertsW, uvsW, trisW, Vector3.up);
+
+                        // Back
+                        if (IsTransparent(x, y, z - 1))
+                            BuildFace(brick, new Vector3(x, y, z), Vector3.up, Vector3.right, true, vertsW, uvsW, trisW, Vector3.back);
+                        // Front
+                        if (IsTransparent(x, y, z + 1))
+                            BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, vertsW, uvsW, trisW, Vector3.forward);
+                    }
+                    else
+                    {
+
+                        byte brick = map[x, y, z];
+                        // Left wall
+                        if (IsTransparent(x - 1, y, z))
+                            BuildFace(brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.left);
+                        // Right wall
+                        if (IsTransparent(x + 1, y, z))
+                            BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.forward, true, verts, uvs, tris, Vector3.right);
+
+                        // Bottom wall
+                        if (IsTransparent(x, y - 1, z))
+                            BuildFace(brick, new Vector3(x, y, z), Vector3.forward, Vector3.right, false, verts, uvs, tris, Vector3.down);
+                        // Top wall
+                        if (IsTransparent(x, y + 1, z))
+                            BuildFace(brick, new Vector3(x, y + 1, z), Vector3.forward, Vector3.right, true, verts, uvs, tris, Vector3.up);
+
+                        // Back
+                        if (IsTransparent(x, y, z - 1))
+                            BuildFace(brick, new Vector3(x, y, z), Vector3.up, Vector3.right, true, verts, uvs, tris, Vector3.back);
+                        // Front
+                        if (IsTransparent(x, y, z + 1))
+                            BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
+
+                    }
 				}
 			}
 		}
@@ -242,11 +299,21 @@ public class Chunk : NetworkBehaviour {
 		visualMesh.triangles = tris.ToArray();
 		visualMesh.RecalculateBounds();
 		visualMesh.RecalculateNormals();
-		
-		meshFilter.mesh = visualMesh;
+
+        wireFrameMesh.vertices = vertsW.ToArray();
+        wireFrameMesh.uv = uvsW.ToArray();
+        wireFrameMesh.triangles = trisW.ToArray();
+        wireFrameMesh.RecalculateBounds();
+        wireFrameMesh.RecalculateNormals();
+
+        meshFilter.mesh = visualMesh;
+        meshFilterWireFrame.mesh = wireFrameMesh;
 		
 		meshCollider.sharedMesh = null;
 		meshCollider.sharedMesh = visualMesh;
+
+        meshColliderWireFrame.sharedMesh = null;
+        meshColliderWireFrame.sharedMesh = wireFrameMesh;
 		
 		yield return 0;
 		
