@@ -288,6 +288,25 @@ public class Chunk : NetworkBehaviour {
                         // Front
                         if (IsTransparent(x, y, z + 1))
                             BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
+                        if (0 == z)
+                        {
+                            BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.left, false, verts, uvs, tris, Vector3.back);
+                        }
+                        if (0 == x)
+                        {
+                            BuildFace(brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.left);
+                            // Right wall
+                        }
+                        if (renderz == z)
+                        {
+                            BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
+                        }
+
+                        if (renderx == x)
+                        {
+                            BuildFace(brick, new Vector3(x , y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.right);
+                        }
+                        // Right wall
 
                     }
 				}
