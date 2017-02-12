@@ -10,7 +10,7 @@ public class World : NetworkBehaviour {
 
     [SyncVar]
     public int chunkWidth = 20, chunkHeight = 20, seed = 0;
-    public int renderx = 20, rendery = 20, renderz = 3;
+    public int renderx = 20, rendery = 20, renderz = 10;
 	public float viewRange = 100;
 	
 	
