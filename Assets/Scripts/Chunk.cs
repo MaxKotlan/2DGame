@@ -208,9 +208,13 @@ public class Chunk : NetworkBehaviour {
 			{
 				for (int z = 0; z < width; z++)
 				{
-					if (map[x,y,z] == 0) continue;
-					
-					byte brick = map[x,y,z];
+                
+
+                    if (map[x,y,z] == 0) continue;
+
+                    Vector3 worldPos = new Vector3(x, y, z) + transform.position;
+
+                    byte brick = map[x,y,z];
 					// Left wall
 					if (IsTransparent(x - 1, y, z))
 						BuildFace (brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.left);
@@ -231,9 +235,27 @@ public class Chunk : NetworkBehaviour {
 					// Front
 					if (IsTransparent(x, y, z + 1))
 						BuildFace (brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
-					
-					
-				}
+                    if ((-40 == worldPos.z))
+                    {
+                        BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.left, false, verts, uvs, tris, Vector3.back);
+                    }
+                    if ((-40) == worldPos.x)
+                    {
+                        BuildFace(brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.left);
+                        // Right wall
+                    }
+                    if ((39) == worldPos.z)
+                    {
+                        BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
+                    }
+
+                    if ((39) == worldPos.x)
+                    {
+                        BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.forward, true, verts, uvs, tris, Vector3.right);
+                        
+                    }
+
+                }
 			}
 		}
 					
