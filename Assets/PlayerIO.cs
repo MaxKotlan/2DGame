@@ -45,11 +45,46 @@ public class PlayerIO : NetworkBehaviour {
         Vector3 newpos = new Vector3(Mathf.FloorToInt(trans.x), Mathf.FloorToInt(trans.y), Mathf.FloorToInt(trans.z));
         if (oldPos != newpos)
         {
-            for (int i = 0; i < Chunk.chunks.Count; i++)
+            Chunk chunk = Chunk.FindChunk(trans);
+                StartCoroutine(chunk.CreateVisualMesh());
+            Chunk surroundingChunkLeft = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(trans.x) - 6), Mathf.FloorToInt(trans.y), Mathf.FloorToInt(trans.z) - 6));
+            Chunk surroundingChunkRight = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(trans.x) + 6), Mathf.FloorToInt(trans.y), Mathf.FloorToInt(trans.z) - 6));
+            //Chunk surroundingChunkUp = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(trans.x)), (Mathf.FloorToInt(trans.y) + 1), Mathf.FloorToInt(trans.z)));
+            //Chunk surroundingChunkDown = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(trans.x)), (Mathf.FloorToInt(trans.y) - 1), Mathf.FloorToInt(trans.z)));
+            Chunk surroundingChunkForward = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(trans.x) - 6), Mathf.FloorToInt(trans.y), (Mathf.FloorToInt(trans.z) + 6)));
+            Chunk surroundingChunkBack = Chunk.FindChunk(new Vector3((Mathf.FloorToInt(trans.x) + 6), Mathf.FloorToInt(trans.y), (Mathf.FloorToInt(trans.z) + 6)));
+            if (surroundingChunkLeft.GetInstanceID() != chunk.GetInstanceID())
             {
-                StartCoroutine(Chunk.chunks[i].CreateVisualMesh());
-              
+                StartCoroutine(surroundingChunkLeft.CreateVisualMesh());
+                StartCoroutine(surroundingChunkLeft.CreateWireframeMesh());
             }
+            if (surroundingChunkRight.GetInstanceID() != chunk.GetInstanceID())
+            {
+                StartCoroutine(surroundingChunkRight.CreateVisualMesh());
+                StartCoroutine(surroundingChunkRight.CreateWireframeMesh());
+            }
+            /*
+            if (surroundingChunkUp.GetInstanceID() != chunk.GetInstanceID())
+            {
+                StartCoroutine(surroundingChunkUp.CreateVisualMesh());
+                StartCoroutine(surroundingChunkUp.CreateWireframeMesh());
+            }
+            if (surroundingChunkDown.GetInstanceID() != chunk.GetInstanceID())
+            {
+                StartCoroutine(surroundingChunkDown.CreateVisualMesh());
+                StartCoroutine(surroundingChunkDown.CreateWireframeMesh());
+            }*/
+            if (surroundingChunkForward.GetInstanceID() != chunk.GetInstanceID())
+            {
+                StartCoroutine(surroundingChunkForward.CreateVisualMesh());
+                StartCoroutine(surroundingChunkForward.CreateWireframeMesh());
+            }
+            if (surroundingChunkBack.GetInstanceID() != chunk.GetInstanceID())
+            {
+                StartCoroutine(surroundingChunkBack.CreateVisualMesh());
+                StartCoroutine(surroundingChunkBack.CreateWireframeMesh());
+            }
+
         }
         oldPos = newpos;
     }
@@ -77,26 +112,32 @@ public class PlayerIO : NetworkBehaviour {
             if (surroundingChunkLeft.GetInstanceID() != chunk.GetInstanceID())
             {
                 StartCoroutine(surroundingChunkLeft.CreateVisualMesh());
+                StartCoroutine(surroundingChunkLeft.CreateWireframeMesh());
             }
             if (surroundingChunkRight.GetInstanceID() != chunk.GetInstanceID())
             {
                 StartCoroutine(surroundingChunkRight.CreateVisualMesh());
+                StartCoroutine(surroundingChunkRight.CreateWireframeMesh());
             }
             if (surroundingChunkUp.GetInstanceID() != chunk.GetInstanceID())
             {
                 StartCoroutine(surroundingChunkUp.CreateVisualMesh());
+                StartCoroutine(surroundingChunkUp.CreateWireframeMesh());
             }
             if (surroundingChunkDown.GetInstanceID() != chunk.GetInstanceID())
             {
                 StartCoroutine(surroundingChunkDown.CreateVisualMesh());
+                StartCoroutine(surroundingChunkDown.CreateWireframeMesh());
             }
             if (surroundingChunkForward.GetInstanceID() != chunk.GetInstanceID())
             {
                 StartCoroutine(surroundingChunkForward.CreateVisualMesh());
+                StartCoroutine(surroundingChunkForward.CreateWireframeMesh());
             }
             if (surroundingChunkBack.GetInstanceID() != chunk.GetInstanceID())
             {
                 StartCoroutine(surroundingChunkBack.CreateVisualMesh());
+                StartCoroutine(surroundingChunkBack.CreateWireframeMesh());
             }
         }
 	}

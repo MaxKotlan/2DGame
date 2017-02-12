@@ -86,13 +86,15 @@ public class Chunk : NetworkBehaviour {
 		meshRenderer = GetComponent<MeshRenderer>();
 		meshCollider = GetComponent<MeshCollider>();
 		meshFilter = GetComponent<MeshFilter>();
-  
+        player = GameObject.FindGameObjectWithTag("Player");
+
         meshRendererWireFrame = this.transform.FindChild("wireframe").GetComponent<MeshRenderer>();
         meshColliderWireFrame = this.transform.FindChild("wireframe").GetComponent<MeshCollider>();
         meshFilterWireFrame = this.transform.FindChild("wireframe").GetComponent<MeshFilter>();
 
 
         CalculateMapFromScratch();
+        StartCoroutine(CreateWireframeMesh());
 		StartCoroutine(CreateVisualMesh());
 		
 	}
@@ -221,33 +223,27 @@ public class Chunk : NetworkBehaviour {
 		
 	}
 
-	
-	public virtual IEnumerator CreateVisualMesh() {
-		visualMesh = new Mesh();
+    public virtual IEnumerator CreateWireframeMesh()
+    {
         wireFrameMesh = new Mesh();
-		
-		List<Vector3> verts = new List<Vector3>();
-		List<Vector2> uvs = new List<Vector2>();
-		List<int> tris = new List<int>();
 
         List<Vector3> vertsW = new List<Vector3>();
         List<Vector2> uvsW = new List<Vector2>();
         List<int> trisW = new List<int>();
 
         for (int x = 0; x < width; x++)
-		{
-			for (int y = 0; y < height; y++)
-			{
-				for (int z = 0; z < width; z++)
-				{
-					if (map[x,y,z] == 0) continue;
+        {
+            for (int y = 0; y < height; y++)
+            {
+                for (int z = 0; z < width; z++)
+                {
+                    if (map[x, y, z] == 0) continue;
+                 
 
                     Vector3 worldPos = new Vector3(x, y, z) + transform.position;
 
                     player = GameObject.FindGameObjectWithTag("Player");
 
-                    if ((worldPos.x > renderx + Mathf.Floor(player.transform.position.x) || worldPos.z > renderz + Mathf.Floor(player.transform.position.z) || worldPos.x < -renderx + Mathf.Floor(player.transform.position.x) || worldPos.z < -renderz + Mathf.Floor(player.transform.position.z)))
-                    {
                         byte brick = map[x, y, z];
                         // Left wall
                         if (IsTransparent(x - 1, y, z))
@@ -269,8 +265,45 @@ public class Chunk : NetworkBehaviour {
                         // Front
                         if (IsTransparent(x, y, z + 1))
                             BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, vertsW, uvsW, trisW, Vector3.forward);
-                    }
-                    else
+                }
+            }
+        }
+
+        wireFrameMesh.vertices = vertsW.ToArray();
+        wireFrameMesh.uv = uvsW.ToArray();
+        wireFrameMesh.triangles = trisW.ToArray();
+        wireFrameMesh.RecalculateBounds();
+        wireFrameMesh.RecalculateNormals();
+
+        meshFilterWireFrame.mesh = wireFrameMesh;
+
+        meshColliderWireFrame.sharedMesh = null;
+        meshColliderWireFrame.sharedMesh = wireFrameMesh;
+
+        yield return 0;
+
+    }
+
+    public IEnumerator CreateVisualMesh() {
+		visualMesh = new Mesh();
+		
+		List<Vector3> verts = new List<Vector3>();
+		List<Vector2> uvs = new List<Vector2>();
+		List<int> tris = new List<int>();
+
+
+        for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				for (int z = 0; z < width; z++)
+				{
+					if (map[x,y,z] == 0) continue;
+
+                    Vector3 worldPos = new Vector3(x, y, z) + transform.position;
+
+
+                    if ((worldPos.x <= renderx + Mathf.Floor(player.transform.position.x) && worldPos.z <= renderz + Mathf.Floor(player.transform.position.z) && worldPos.x >= -renderx + Mathf.Floor(player.transform.position.x) && worldPos.z >= -renderz + Mathf.Floor(player.transform.position.z)))
                     {
 
                         byte brick = map[x, y, z];
@@ -294,21 +327,21 @@ public class Chunk : NetworkBehaviour {
                         // Front
                         if (IsTransparent(x, y, z + 1))
                             BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
-                        if (-renderz == worldPos.z + Mathf.Floor(player.transform.position.z))
+                        if ((-renderz + Mathf.Floor(player.transform.position.z)) == worldPos.z)
                         {
                             BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.left, false, verts, uvs, tris, Vector3.back);
                         }
-                        if (-renderx == worldPos.x + Mathf.Floor(player.transform.position.x))
+                        if ((-renderx + Mathf.Floor(player.transform.position.x)) == worldPos.x)
                         {
                             BuildFace(brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.left);
                             // Right wall
                         }
-                        if (renderz == worldPos.z + Mathf.Floor(player.transform.position.z))
+                        if ((renderz + Mathf.Floor(player.transform.position.z)) == worldPos.z)
                         {
                             BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
                         }
 
-                        if (renderx == worldPos.x + Mathf.Floor(player.transform.position.x))
+                        if ((renderx + Mathf.Floor(player.transform.position.x)) == worldPos.x)
                         {
                             BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.forward, true, verts, uvs, tris, Vector3.right);
                         }
@@ -325,24 +358,17 @@ public class Chunk : NetworkBehaviour {
 		visualMesh.RecalculateBounds();
 		visualMesh.RecalculateNormals();
 
-        wireFrameMesh.vertices = vertsW.ToArray();
-        wireFrameMesh.uv = uvsW.ToArray();
-        wireFrameMesh.triangles = trisW.ToArray();
-        wireFrameMesh.RecalculateBounds();
-        wireFrameMesh.RecalculateNormals();
 
         meshFilter.mesh = visualMesh;
-        meshFilterWireFrame.mesh = wireFrameMesh;
 		
-		meshCollider.sharedMesh = null;
-		meshCollider.sharedMesh = visualMesh;
+		//meshCollider.sharedMesh = null;
+		//meshCollider.sharedMesh = visualMesh;
 
-        meshColliderWireFrame.sharedMesh = null;
-        meshColliderWireFrame.sharedMesh = wireFrameMesh;
 		
 		yield return 0;
 		
 	}
+
 	public virtual void BuildFace(byte brick, Vector3 corner, Vector3 up, Vector3 right, bool reversed, List<Vector3> verts, List<Vector2> uvs, List<int> tris, Vector3 direction)
 	{
 		int index = verts.Count;
@@ -454,8 +480,11 @@ public class Chunk : NetworkBehaviour {
 		if ((x < 0) || (z < 0) || (y < 0) || (y >= height) || (x >= width) || (z >= width)) {
 			Chunk chunk = Chunk.FindChunk(new Vector3(x+1,y+1,z+1));
 			StartCoroutine (chunk.CreateVisualMesh ());
-		}
+            StartCoroutine(chunk.CreateWireframeMesh());
+
+        }
 		StartCoroutine(CreateVisualMesh ());
+        StartCoroutine(CreateWireframeMesh());
 	}
 
 	public virtual byte GetByte (int x, int y , int z)

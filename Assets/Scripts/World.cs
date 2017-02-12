@@ -33,7 +33,9 @@ public class World : NetworkBehaviour {
         {
             for (float x = -2 * chunkWidth; x < 2 * chunkWidth; x += chunkWidth)
             {
-                for (float y = transform.position.y - viewRange; y < transform.position.y + viewRange; y += chunkHeight)
+                /*infinite chunks*/
+                //for (float y = transform.position.y - viewRange; y < transform.position.y + viewRange; y += chunkHeight)
+                for (float y = 0; y < 2 * chunkHeight; y += chunkHeight)
                 {
                     for (float z = -2 * chunkWidth; z < 2 * chunkWidth; z += chunkWidth)
                     {
