@@ -44,6 +44,8 @@ public class Chunk : NetworkBehaviour {
 
     BlockDifferantiator blockdifferntiator = new BlockDifferantiator();
 
+    public GameObject player;
+
 	public Mesh visualMesh;
 	protected MeshRenderer meshRenderer;
 	protected MeshCollider meshCollider;
@@ -218,6 +220,7 @@ public class Chunk : NetworkBehaviour {
 		return Mathf.Max(0, Noise.Generate(noiseX, noiseY, noiseZ));
 		
 	}
+
 	
 	public virtual IEnumerator CreateVisualMesh() {
 		visualMesh = new Mesh();
@@ -240,7 +243,10 @@ public class Chunk : NetworkBehaviour {
 					if (map[x,y,z] == 0) continue;
 
                     Vector3 worldPos = new Vector3(x, y, z) + transform.position;
-                    if ((worldPos.x > renderx || worldPos.z > renderz || worldPos.x < 0 || worldPos.z < 0))
+
+                    player = GameObject.FindGameObjectWithTag("Player");
+
+                    if ((worldPos.x > renderx + Mathf.Floor(player.transform.position.x) || worldPos.z > renderz + Mathf.Floor(player.transform.position.z) || worldPos.x < -renderx + Mathf.Floor(player.transform.position.x) || worldPos.z < -renderz + Mathf.Floor(player.transform.position.z)))
                     {
                         byte brick = map[x, y, z];
                         // Left wall
@@ -288,21 +294,21 @@ public class Chunk : NetworkBehaviour {
                         // Front
                         if (IsTransparent(x, y, z + 1))
                             BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
-                        if (0 == worldPos.z)
+                        if (-renderz == worldPos.z + Mathf.Floor(player.transform.position.z))
                         {
                             BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.left, false, verts, uvs, tris, Vector3.back);
                         }
-                        if (0 == worldPos.x)
+                        if (-renderx == worldPos.x + Mathf.Floor(player.transform.position.x))
                         {
                             BuildFace(brick, new Vector3(x, y, z), Vector3.up, Vector3.forward, false, verts, uvs, tris, Vector3.left);
                             // Right wall
                         }
-                        if (renderz == worldPos.z)
+                        if (renderz == worldPos.z + Mathf.Floor(player.transform.position.z))
                         {
                             BuildFace(brick, new Vector3(x, y, z + 1), Vector3.up, Vector3.right, false, verts, uvs, tris, Vector3.forward);
                         }
 
-                        if (renderx == worldPos.x)
+                        if (renderx == worldPos.x + Mathf.Floor(player.transform.position.x))
                         {
                             BuildFace(brick, new Vector3(x + 1, y, z), Vector3.up, Vector3.forward, true, verts, uvs, tris, Vector3.right);
                         }

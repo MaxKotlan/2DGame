@@ -7,8 +7,11 @@ public class PlayerIO : NetworkBehaviour {
 	Transform cameraTransform;
    // public Chunk chunk;
 	int matid = 1;
-	// Use this for initialization
-	void Start () {
+
+    Vector3 oldPos;
+
+    // Use this for initialization
+    void Start () {
 		cameraTransform = transform.FindChild ("FirstPersonCharacter").GetComponent<Transform> ();
 	}
 
@@ -38,6 +41,17 @@ public class PlayerIO : NetworkBehaviour {
 				CmdSetBlock ((int)blockpos.x, (int)blockpos.y, (int)blockpos.z, (byte)0);
 			}
         }
+        Vector3 trans = this.transform.position;
+        Vector3 newpos = new Vector3(Mathf.FloorToInt(trans.x), Mathf.FloorToInt(trans.y), Mathf.FloorToInt(trans.z));
+        if (oldPos != newpos)
+        {
+            for (int i = 0; i < Chunk.chunks.Count; i++)
+            {
+                StartCoroutine(Chunk.chunks[i].CreateVisualMesh());
+              
+            }
+        }
+        oldPos = newpos;
     }
 
 	[Command]
