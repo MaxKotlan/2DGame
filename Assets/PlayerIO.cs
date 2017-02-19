@@ -4,6 +4,8 @@ using UnityEngine.Networking;
 
 public class PlayerIO : NetworkBehaviour {
 
+    public GameObject blockInstance;
+
 	Transform cameraTransform;
    // public Chunk chunk;
 	int matid = 1;
@@ -36,6 +38,8 @@ public class PlayerIO : NetworkBehaviour {
             }
 			if (Input.GetMouseButtonDown (1)) {
 				CmdSetBlock ((int)blockpos.x, (int)blockpos.y, (int)blockpos.z, (byte)0);
+                GameObject instance = Instantiate(blockInstance);
+                instance.transform.position = new Vector3(Mathf.Round(blockpos.x) + .5f, Mathf.Round(blockpos.y) + .5f, Mathf.Round(blockpos.z) + .5f);
 			}
         }
     }
