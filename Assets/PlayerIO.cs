@@ -39,8 +39,9 @@ public class PlayerIO : NetworkBehaviour {
 			if (Input.GetMouseButtonDown (1)) {
 				CmdSetBlock ((int)blockpos.x, (int)blockpos.y, (int)blockpos.z, (byte)0);
                 GameObject instance = Instantiate(blockInstance);
+                instance.GetComponent<MeshExplode>().matid = matid;
                 instance.transform.position = new Vector3(Mathf.Round(blockpos.x) + .5f, Mathf.Round(blockpos.y) + .5f, Mathf.Round(blockpos.z) + .5f);
-			}
+            }
         }
     }
 
